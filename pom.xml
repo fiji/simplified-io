@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>sc.fiji</groupId>
+		<artifactId>pom-indago</artifactId>
+		<version>2.2.16</version>
+	</parent>
+
+	<properties>
+		<license.licenseName>bsd_2</license.licenseName>
+		<license.copyrightOwners>TrNdy developers</license.copyrightOwners>
+
+		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
+		<releaseProfiles>deploy-to-imagej</releaseProfiles>
+	</properties>
+
+	<groupId>com.indago.io</groupId>
+	<artifactId>Indago</artifactId>
+	<version>0.1-SNAPSHOT</version>
+
+	<name>indago</name>
+	<description>indigare (ital.) - investigate.</description>
+	<url>https:github.com/TrNdy/indago</url>
+	<inceptionYear>2013</inceptionYear>
+	<organization>
+		<name>TrNdy</name>
+		<url>https://github.com/TrNdy</url>
+	</organization>
+	<licenses>
+		<license>
+			<name>Simplified BSD License</name>
+			<url>https://opensource.org/licenses/BSD-2-Clause</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.scif</groupId>
+			<artifactId>scifio</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2-ij</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>sc.fiji</groupId>
+			<artifactId>bigdataviewer-vistools</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-ops</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.miglayout</groupId>
+			<artifactId>miglayout</artifactId>
+			<classifier>swing</classifier>
+		</dependency>
+
+		<!-- Test dependencies -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<developers>
+		<developer>
+			<id>tetoroa</id>
+			<name>Gabriella Turek</name>
+			<email>gaby@dv8.net</email>
+			<url>https://juglabm.mpi-cbg.de</url>
+			<organization>MPI-CBG</organization>
+			<organizationUrl>http://www.mpi-cbg.de/</organizationUrl>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>+1</timezone>
+		</developer>
+	</developers>
+	<contributors>
+		<contributor>
+			<name>none</name>
+		</contributor>
+	</contributors>
+
+	<mailingLists>
+		<mailingList>
+			<name>none</name>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:git:git://github.com/juglab/indago-io</connection>
+		<developerConnection>scm:git:git@github.com:TrNdy/indago</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/juglab/indago-io</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/juglab/indago-io/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/juglab/indago-io</url>
+	</ciManagement>
+
+
+	<repositories>
+		<repository>
+			<id>dais-maven.mpi-cbg.de</id>
+			<url>http://dais-maven.mpi-cbg.de</url>
+		</repository>
+		<repository>
+			<id>imagej.public</id>
+			<url>http://maven.imagej.net/content/groups/public</url>
+		</repository>
+	</repositories>
+</project>

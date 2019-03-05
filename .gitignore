@@ -1,0 +1,13 @@
+.DS_Store
+*.log
+/*.project
+/target/
+/.settings/
+.factorypath
+.classpath
+indago.properties
+/bin/
+
+# IntelliJ
+.idea/
+*.iml
