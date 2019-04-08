@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -54,15 +56,91 @@
 			<artifactId>imagej-ops</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.miglayout</groupId>
-			<artifactId>miglayout</artifactId>
-			<classifier>swing</classifier>
+			<groupId>org.openmicroscopy</groupId>
+			<artifactId>ome-common</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.openmicroscopy</groupId>
+			<artifactId>ome-xml</artifactId>
+		</dependency>
+		 <dependency>
+    		<groupId>io.scif</groupId>
+    		<artifactId>scifio-bf-compat</artifactId>
+	    </dependency>
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>formats-bsd</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>formats-gpl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.netlib</groupId>
+			<artifactId>netlib-java</artifactId>
+			<version>0.9.3-renjin-patched</version>
+		</dependency>
+		<dependency>
+			<groupId>jaxen</groupId>
+			<artifactId>jaxen</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.jms</groupId>
+			<artifactId>javax.jms-api</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>javax.mail-api</artifactId>
+			<version>1.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all</artifactId>
+			<version>2.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.jogl</groupId>
+			<artifactId>jogl-all-main</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jogamp.gluegen</groupId>
+			<artifactId>gluegen-rt-main</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ome</groupId>
+			<artifactId>bio-formats_plugins</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.jna</groupId>
+			<artifactId>jna</artifactId>
+			<version>3.0.9</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.protobuf</groupId>
+			<artifactId>protobuf-java</artifactId>
+			<version>3.6.1</version>
+		</dependency>
+
+
 
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>6.9.10</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -119,4 +197,20 @@
 			<url>http://maven.imagej.net/content/groups/public</url>
 		</repository>
 	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>java</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 </project>
