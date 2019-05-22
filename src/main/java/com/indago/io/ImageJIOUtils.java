@@ -64,7 +64,7 @@ public class ImageJIOUtils {
 	 * @see org.java.Context
 	 */
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImageWithIJ( final File imgFile, Context context ) {
+	public static ImgPlus loadImageWithSCIFIO( final File imgFile, Context context ) {
 		SCIFIO scifio = null;
 		if ( context == null )
 			scifio = new SCIFIO();
@@ -130,7 +130,7 @@ public class ImageJIOUtils {
 	public static ImgPlus loadImage( final File imgFile, Context context ) {
 		ImgPlus img = ImageJIOUtils.loadImageWithIJ1( imgFile );
 		if ( img == null )
-			img = ImageJIOUtils.loadImageWithIJ( imgFile, context );
+			img = ImageJIOUtils.loadImageWithSCIFIO( imgFile, context );
 
 		if ( img == null )
 			img = ImageJIOUtils.loadImageWithBioFormats( imgFile );
