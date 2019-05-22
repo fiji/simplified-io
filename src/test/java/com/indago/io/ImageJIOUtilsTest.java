@@ -25,7 +25,13 @@ public class ImageJIOUtilsTest {
 
 	@BeforeClass
 	public static void init() throws URISyntaxException {
-		// Silence noisy library loggers
+		silenceNoisyLibraryLoggers();
+		unzipImages();
+		listImageFiles();
+	}
+
+	private static void silenceNoisyLibraryLoggers()
+	{
 		LoggerContext loggerContext = ( LoggerContext ) LoggerFactory.getILoggerFactory();
 		Logger rootLogger = loggerContext.getLogger( "loci.formats" );
 		rootLogger.setLevel( Level.OFF );
@@ -35,7 +41,10 @@ public class ImageJIOUtilsTest {
 		rootLogger.setLevel( Level.OFF );
 		rootLogger = loggerContext.getLogger( "ome.xml.model.enums.handlers" );
 		rootLogger.setLevel( Level.OFF );
-		// Unzip zipped images
+	}
+
+	private static void unzipImages()
+	{
 		Collection< File > files =
 				FileUtils.listFiles( new File( imagesPath ), new String[] { "zip" }, false );
 		System.out.println( "Unzipping " + files.size() + " images" );
@@ -47,22 +56,25 @@ public class ImageJIOUtilsTest {
 				System.out.println( e.getMessage() );
 			}
 		}
-		
-		// Get a list of all the images to be processed. Yes, zips can be processed but take too long
+	}
+
+	private static void listImageFiles()
+	{
 		final IOFileFilter zips = new IOFileFilter() {
-		    public boolean accept(File file) {
-		        return !file.getName().endsWith( "zip" ) && !file.isDirectory() && !file.getName().startsWith( "." );
-		    }
+			public boolean accept(File file) {
+				return !file.getName().endsWith( "zip" ) && !file.isDirectory() && !file.getName().startsWith( "." );
+			}
 
 			@Override
 			public boolean accept( File dir, String name ) {
-		        return !name.endsWith( "zip" );
+				return !name.endsWith( "zip" );
 			}
 		};
 
 		tbp = FileUtils.listFiles( new File( imagesPath ), zips, null );
 		ntot = tbp.size();
 	}
+
 
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
