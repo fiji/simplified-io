@@ -4,6 +4,7 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import net.imagej.ImgPlus;
+import net.imglib2.util.StopWatch;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
@@ -125,12 +126,10 @@ public class ImageJIOUtilsTest {
 	{
 		System.out.println( "******* " + title );
 		System.out.println( "Reading:" + imageFile.getName() );
-		long start = System.nanoTime();
+		StopWatch watch = StopWatch.createAndStart();
 		ImgPlus img2 = loadImageFunction.apply( imageFile );
-		long finish = System.nanoTime();
-		long timeElapsed = finish - start;
+		System.out.println( "Time elapsed " + watch.toString() );
 		assertNotNull( img2 );
-		System.out.println( "Time elapsed " + timeElapsed );
 	}
 
 }
