@@ -5,9 +5,7 @@ import ij.Macro;
 import ij.io.Opener;
 import ij.plugin.ImagesToStack;
 import io.scif.SCIFIO;
-import io.scif.bf.BioFormatsFormat;
 import loci.formats.FormatException;
-import loci.formats.ImageReader;
 import loci.plugins.in.ImagePlusReader;
 import loci.plugins.in.ImportProcess;
 import loci.plugins.in.ImporterOptions;
@@ -20,8 +18,6 @@ import java.io.IOException;
 import java.util.StringJoiner;
 
 public class ImageJIOUtils {
-
-	private static ImageReader imgReader = null;
 
 	private static SCIFIO scifio;
 
@@ -74,12 +70,7 @@ public class ImageJIOUtils {
 	 */
 	@SuppressWarnings( "rawtypes" )
 	public static ImgPlus loadImageWithBioFormats( final File imgFile ) {
-		if ( imgReader == null ) {
-			BioFormatsFormat bff = new BioFormatsFormat();
-			imgReader = bff.createImageReader();
-		}
 		try {
-			imgReader.setId( imgFile.getAbsolutePath() );
 			ImporterOptions options = new ImporterOptions();
 			if ( Macro.getOptions() == null ) {
 				options.loadOptions();
