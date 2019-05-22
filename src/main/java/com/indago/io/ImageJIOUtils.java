@@ -6,6 +6,7 @@ import ij.io.Opener;
 import ij.plugin.ImagesToStack;
 import io.scif.SCIFIO;
 import io.scif.bf.BioFormatsFormat;
+import io.scif.services.DatasetIOService;
 import loci.formats.FormatException;
 import loci.formats.ImageReader;
 import loci.plugins.in.ImagePlusReader;
@@ -30,6 +31,14 @@ public class ImageJIOUtils {
 					"IndagoIO" );
 
 	private static ImageReader imgReader = null;
+
+	private static SCIFIO scifio;
+
+	private static SCIFIO getScifio() {
+		if( scifio == null )
+			scifio = new SCIFIO();
+		return scifio;
+	}
 
 	/**
 	 * Loads an image using ImageJ1, then wraps it into an ImgPlus object
@@ -56,15 +65,10 @@ public class ImageJIOUtils {
 	 * @see org.scijava.Context
 	 */
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImageWithSCIFIO( final File imgFile, Context context ) {
-		SCIFIO scifio = null;
-		if ( context == null )
-			scifio = new SCIFIO();
-		else
-			scifio = new SCIFIO( context );
-		Dataset dataset = null;
+	public static ImgPlus loadImageWithSCIFIO( final File imgFile ) {
 		try {
-			dataset = scifio.datasetIO().open( imgFile.getAbsolutePath() );
+			SCIFIO scifio = getScifio();
+			Dataset dataset = scifio.datasetIO().open( imgFile.getAbsolutePath() );
 			return dataset.getImgPlus();
 		} catch ( IOException e ) {
 			log.info( "Error loading file " + imgFile.getName() + ": " + e.getMessage() );
@@ -109,18 +113,13 @@ public class ImageJIOUtils {
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImage( final File imgFile, Context context ) {
+	public static ImgPlus loadImage( final File imgFile ) {
 		ImgPlus img = ImageJIOUtils.loadImageWithIJ1( imgFile );
 		if ( img == null )
-			img = ImageJIOUtils.loadImageWithSCIFIO( imgFile, context );
+			img = ImageJIOUtils.loadImageWithSCIFIO( imgFile );
 
 		if ( img == null )
 			img = ImageJIOUtils.loadImageWithBioFormats( imgFile );
 		return img;
-	}
-
-	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImage( final File imgFile ) {
-		return ImageJIOUtils.loadImage( imgFile, null );
 	}
 }
