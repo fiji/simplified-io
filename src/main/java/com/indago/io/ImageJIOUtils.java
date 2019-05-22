@@ -1,14 +1,5 @@
 package com.indago.io;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.scijava.Context;
-import org.scijava.log.DefaultLogger;
-import org.scijava.log.LogLevel;
-import org.scijava.log.LogSource;
-import org.scijava.log.Logger;
-
 import ij.ImagePlus;
 import ij.Macro;
 import ij.io.Opener;
@@ -23,6 +14,14 @@ import loci.plugins.in.ImporterOptions;
 import net.imagej.Dataset;
 import net.imagej.ImgPlus;
 import net.imglib2.img.ImagePlusAdapter;
+import org.scijava.Context;
+import org.scijava.log.DefaultLogger;
+import org.scijava.log.LogLevel;
+import org.scijava.log.LogSource;
+import org.scijava.log.Logger;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ImageJIOUtils {
 
@@ -120,10 +119,6 @@ public class ImageJIOUtils {
 	 * 
 	 * @param input
 	 *            File
-	 * @param useij1
-	 *            if true, it will use the IJ1 api to read the image. If the
-	 *            image is null, it will first try IJ as it handles a few more
-	 *            formats, then BioFormats
 	 * @param context
 	 *            can be null, only used by IJ
 	 * 
@@ -132,15 +127,10 @@ public class ImageJIOUtils {
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImage( final File imgFile, boolean useij1, Context context ) {
-		ImgPlus img = null;
-		if ( useij1 ) {
-			img = ImageJIOUtils.loadImageWithIJ1( imgFile );
-			if ( img == null )
-		    	img = ImageJIOUtils.loadImageWithIJ( imgFile, context );
-		} else {
+	public static ImgPlus loadImage( final File imgFile, Context context ) {
+		ImgPlus img = ImageJIOUtils.loadImageWithIJ1( imgFile );
+		if ( img == null )
 			img = ImageJIOUtils.loadImageWithIJ( imgFile, context );
-		}
 
 		if ( img == null )
 			img = ImageJIOUtils.loadImageWithBioFormats( imgFile );
@@ -148,7 +138,7 @@ public class ImageJIOUtils {
 	}
 
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImage( final File imgFile, boolean useij1 ) {
-		return ImageJIOUtils.loadImage( imgFile, useij1, null );
+	public static ImgPlus loadImage( final File imgFile ) {
+		return ImageJIOUtils.loadImage( imgFile, null );
 	}
 }
