@@ -4,6 +4,8 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import net.imagej.ImgPlus;
+import net.imglib2.type.numeric.ARGBType;
+import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.StopWatch;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
@@ -21,6 +23,7 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.function.Function;
 
+import static org.junit.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 @RunWith(Parameterized.class)
@@ -114,6 +117,18 @@ public class ImageJIOUtilsTest {
 	@Test
 	public void testLoadImage() {
 		testLoadImage( "testLoadImages", file -> ImageJIOUtils.loadImage( file ) );
+	}
+
+	@Test
+	public void testLoadImageWithRealType() {
+		ImgPlus< DoubleType > image = ImageJIOUtils.loadImage( imageFile , new DoubleType() );
+		assertEquals( true, image.firstElement() instanceof DoubleType );
+	}
+
+	@Test
+	public void testLoadImageWithARGBType() {
+		ImgPlus< ARGBType > image = ImageJIOUtils.loadImage( imageFile , new ARGBType() );
+		assertEquals( true, image.firstElement() instanceof ARGBType );
 	}
 
 	private void testLoadImage( String title, Function< File, ImgPlus > loadImageFunction )
