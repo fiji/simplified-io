@@ -1,32 +1,43 @@
 package com.indago.io;
 
-import java.io.File;
-import java.net.URISyntaxException;
-import java.util.Collection;
-import java.util.function.Function;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.filefilter.IOFileFilter;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.slf4j.LoggerFactory;
-
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import net.imagej.ImgPlus;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.IOFileFilter;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.function.Function;
+
+import static org.testng.AssertJUnit.assertNotNull;
+
+@RunWith(Parameterized.class)
 public class ImageJIOUtilsTest {
+
+	private final File imageFile;
+
 	private static String imagesPath = System.getProperty("user.dir") + File.separatorChar + "test-images";
-	private static Collection< File > imageFiles = null;
+
+	@Parameterized.Parameters( name = "{0}" )
+	public static Collection<File> data() {
+		return listImageFiles();
+	}
 
 	@BeforeClass
 	public static void init() throws URISyntaxException {
 		silenceNoisyLibraryLoggers();
 		unzipImages();
-		imageFiles = listImageFiles();
 	}
 
 	private static void silenceNoisyLibraryLoggers()
@@ -73,19 +84,25 @@ public class ImageJIOUtilsTest {
 		return FileUtils.listFiles( new File( imagesPath ), zips, null );
 	}
 
+	public ImageJIOUtilsTest( File imageFile ) {
+		this.imageFile = imageFile;
+	}
 
+	@Ignore( "This is not expected to work for all images. ")
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
 	public void testLoadImagesWithIJ1() {
 		testLoadImages( "testLoadImagesWithIJ1", file -> ImageJIOUtils.loadImageWithIJ1( file ) );
 	}
 
+	@Ignore( "This is not expected to work for all images. ")
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
 	public void testLoadImagesWithIJ() {
 		testLoadImages( "testLoadImagesWithIJ", file -> ImageJIOUtils.loadImageWithIJ( file, null ) );
 	}
 
+	@Ignore( "This is not expected to work for all images. ")
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
 	public void testLoadImagesWithBioFormats() {
@@ -106,21 +123,14 @@ public class ImageJIOUtilsTest {
 
 	private void testLoadImages( String title, Function< File, ImgPlus > loadImageFunction )
 	{
-		System.out.println( "******* " + title);
-		int cntr = 0;
-		for ( File file : imageFiles ) {
-			System.out.println( "Reading:" + file.getName() );
-			long start = System.nanoTime();
-			ImgPlus img2 = loadImageFunction.apply( file );
-			long finish = System.nanoTime();
-			long timeElapsed = finish - start;
-			if ( img2 != null ) {
-				System.out.println( "Time elapsed " + timeElapsed );
-				cntr++;
-				//if (!GraphicsEnvironment.isHeadless()) ImageJFunctions.show((RandomAccessibleInterval) img2 );
-			}
-		}
-		System.out.println( imageFiles.size() + " file found, " + cntr + " processed" );
+		System.out.println( "******* " + title );
+		System.out.println( "Reading:" + imageFile.getName() );
+		long start = System.nanoTime();
+		ImgPlus img2 = loadImageFunction.apply( imageFile );
+		long finish = System.nanoTime();
+		long timeElapsed = finish - start;
+		assertNotNull( img2 );
+		System.out.println( "Time elapsed " + timeElapsed );
 	}
 
 }
