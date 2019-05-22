@@ -6,7 +6,6 @@ import ij.io.Opener;
 import ij.plugin.ImagesToStack;
 import io.scif.SCIFIO;
 import io.scif.bf.BioFormatsFormat;
-import io.scif.services.DatasetIOService;
 import loci.formats.FormatException;
 import loci.formats.ImageReader;
 import loci.plugins.in.ImagePlusReader;
@@ -15,20 +14,12 @@ import loci.plugins.in.ImporterOptions;
 import net.imagej.Dataset;
 import net.imagej.ImgPlus;
 import net.imglib2.img.ImagePlusAdapter;
-import org.scijava.Context;
-import org.scijava.log.DefaultLogger;
-import org.scijava.log.LogLevel;
-import org.scijava.log.LogSource;
-import org.scijava.log.Logger;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.StringJoiner;
 
 public class ImageJIOUtils {
-
-	private static Logger log =
-			new DefaultLogger( System.out::print, LogSource.newRoot(), LogLevel.INFO ).subLogger(
-					"IndagoIO" );
 
 	private static ImageReader imgReader = null;
 
@@ -52,7 +43,8 @@ public class ImageJIOUtils {
 	public static ImgPlus loadImageWithIJ1( final File imgFile ) {
 		final Opener opnr = new Opener();
 		ImagePlus image = opnr.openImage( imgFile.getAbsolutePath() );
-		if ( image == null ) return null;
+		if ( image == null )
+			throw new ImageOpenException( "new ij.io.Opener().openImage() returned null." );
 		return new ImgPlus( ImagePlusAdapter.wrapImgPlus( image ) );
 	}
 
@@ -71,8 +63,7 @@ public class ImageJIOUtils {
 			Dataset dataset = scifio.datasetIO().open( imgFile.getAbsolutePath() );
 			return dataset.getImgPlus();
 		} catch ( IOException e ) {
-			log.info( "Error loading file " + imgFile.getName() + ": " + e.getMessage() );
-			return null;
+			throw new ImageOpenException( e );
 		}
 	}
 
@@ -102,8 +93,7 @@ public class ImageJIOUtils {
 			ImagePlus finalImage = ImagesToStack.run( imps );
 			return ImagePlusAdapter.wrapImgPlus( finalImage );
 		} catch ( FormatException | IOException e ) {
-			log.info( "Error loading file " + imgFile.getName() + ": " + e.getMessage() );
-			return null;
+			throw new ImageOpenException( e );
 		}
 	}
 
@@ -114,12 +104,34 @@ public class ImageJIOUtils {
 	 */
 	@SuppressWarnings( "rawtypes" )
 	public static ImgPlus loadImage( final File imgFile ) {
-		ImgPlus img = ImageJIOUtils.loadImageWithIJ1( imgFile );
-		if ( img == null )
-			img = ImageJIOUtils.loadImageWithSCIFIO( imgFile );
 
-		if ( img == null )
-			img = ImageJIOUtils.loadImageWithBioFormats( imgFile );
-		return img;
+		if( ! imgFile.exists() )
+			throw new ImageOpenException( "Image file doesn't exist: " + imgFile );
+
+		StringJoiner messages = new StringJoiner( "\n" );
+
+		try {
+			return ImageJIOUtils.loadImageWithIJ1( imgFile );
+		}
+		catch ( Exception e ) {
+			messages.add( "ImageJ1 Exception: " + e.getMessage() );
+		}
+
+		try {
+			return ImageJIOUtils.loadImageWithSCIFIO( imgFile );
+		}
+		catch ( Exception e ) {
+			messages.add( "SCIFIO Exception: " + e.getMessage() );
+		}
+
+		try {
+			return ImageJIOUtils.loadImageWithBioFormats( imgFile );
+		}
+		catch ( Exception e ) {
+			messages.add( "BioFormats Exception: " + e.getMessage() );
+		}
+
+		throw new ImageOpenException( "Couldn't open image file: \"" + imgFile + "\"\n" +
+				"Exceptions:\n" + messages );
 	}
 }

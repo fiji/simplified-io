@@ -100,7 +100,7 @@ public class ImageJIOUtilsTest {
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
 	public void testLoadImageWithSCIFIO() {
-		testLoadImage( "testLoadImagesWithSCIFIO", file -> ImageJIOUtils.loadImageWithSCIFIO( file, null ) );
+		testLoadImage( "testLoadImagesWithSCIFIO", file -> ImageJIOUtils.loadImageWithSCIFIO( file ) );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
