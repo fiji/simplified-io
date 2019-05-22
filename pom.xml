@@ -74,6 +74,14 @@
 		<dependency>
 			<groupId>ome</groupId>
 			<artifactId>formats-gpl</artifactId>
+			<exclusions>
+				<!-- TODO: This dependency is excluded because it causes class duplication problems with apache commons. -->
+				<!-- TODO: This exclusion probably breaks "TEM_filter_sample.jpg", and other bio images. -->
+				<exclusion>
+					<groupId>ch.systems.cisd</groupId>
+					<artifactId>jhdf5</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.netlib</groupId>
