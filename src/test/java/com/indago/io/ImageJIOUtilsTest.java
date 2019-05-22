@@ -20,14 +20,13 @@ import net.lingala.zip4j.exception.ZipException;
 
 public class ImageJIOUtilsTest {
 	private static String imagesPath = System.getProperty("user.dir") + File.separatorChar + "test-images";
-	private static Collection< File > tbp = null;
-	private static int ntot = 0;
+	private static Collection< File > imageFiles = null;
 
 	@BeforeClass
 	public static void init() throws URISyntaxException {
 		silenceNoisyLibraryLoggers();
 		unzipImages();
-		listImageFiles();
+		imageFiles = listImageFiles();
 	}
 
 	private static void silenceNoisyLibraryLoggers()
@@ -58,7 +57,7 @@ public class ImageJIOUtilsTest {
 		}
 	}
 
-	private static void listImageFiles()
+	private static Collection< File > listImageFiles()
 	{
 		final IOFileFilter zips = new IOFileFilter() {
 			public boolean accept(File file) {
@@ -71,8 +70,7 @@ public class ImageJIOUtilsTest {
 			}
 		};
 
-		tbp = FileUtils.listFiles( new File( imagesPath ), zips, null );
-		ntot = tbp.size();
+		return FileUtils.listFiles( new File( imagesPath ), zips, null );
 	}
 
 
@@ -110,7 +108,7 @@ public class ImageJIOUtilsTest {
 	{
 		System.out.println( "******* " + title);
 		int cntr = 0;
-		for ( File file : tbp ) {
+		for ( File file : imageFiles ) {
 			System.out.println( "Reading:" + file.getName() );
 			long start = System.nanoTime();
 			ImgPlus img2 = loadImageFunction.apply( file );
@@ -122,7 +120,7 @@ public class ImageJIOUtilsTest {
 				//if (!GraphicsEnvironment.isHeadless()) ImageJFunctions.show((RandomAccessibleInterval) img2 );
 			}
 		}
-		System.out.println( ntot + " file found, " + cntr + " processed" );
+		System.out.println( imageFiles.size() + " file found, " + cntr + " processed" );
 	}
 
 }
