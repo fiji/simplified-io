@@ -11,7 +11,22 @@ import loci.plugins.in.ImportProcess;
 import loci.plugins.in.ImporterOptions;
 import net.imagej.Dataset;
 import net.imagej.ImgPlus;
+import net.imagej.axis.Axes;
+import net.imagej.axis.AxisType;
+import net.imagej.axis.CalibratedAxis;
+import net.imagej.axis.DefaultLinearAxis;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.converter.Converters;
+import net.imglib2.converter.RealTypeConverters;
 import net.imglib2.img.ImagePlusAdapter;
+import net.imglib2.img.Img;
+import net.imglib2.img.ImgView;
+import net.imglib2.img.display.imagej.ImgPlusViews;
+import net.imglib2.type.NativeType;
+import net.imglib2.type.numeric.ARGBType;
+import net.imglib2.type.numeric.RealType;
+import net.imglib2.type.numeric.integer.UnsignedByteType;
+import net.imglib2.util.Util;
 
 import java.io.File;
 import java.io.IOException;
@@ -45,9 +60,9 @@ public class ImageJIOUtils {
 	}
 
 	/**
-	 * 
+	 *
 	 * Loads an image using SCIFIO
-	 * 
+	 *
 	 * @return ImgPlus object
 	 * @see net.imagej.ImgPlus
 	 * @see org.scijava.Context
@@ -65,7 +80,7 @@ public class ImageJIOUtils {
 
 	/**
 	 * Loads an image using BioFormats
-	 * 
+	 *
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
@@ -90,7 +105,7 @@ public class ImageJIOUtils {
 
 	/**
 	 * Loads an image into an ImgPlus object
-	 * 
+	 *
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
@@ -124,5 +139,65 @@ public class ImageJIOUtils {
 
 		throw new ImageOpenException( "Couldn't open image file: \"" + imgFile + "\"\n" +
 				"Exceptions:\n" + messages );
+	}
+
+	public static < T extends NativeType<T> > ImgPlus<T> loadImage( File file, T type )
+	{
+		return convert( loadImage( file ), type );
+	}
+
+	private static < T extends NativeType<T> > ImgPlus<T> convert( ImgPlus image, T type )
+	{
+		Object imageType = Util.getTypeFromInterval( image );
+		if ( imageType.getClass().equals( type.getClass() ) )
+		{
+			return image;
+		}
+		else if( imageType instanceof RealType && type instanceof RealType )
+		{
+			return convertBetweenRealType( image, ( RealType ) type );
+		}
+		else if( imageType instanceof UnsignedByteType && type instanceof ARGBType )
+		{
+			return convertUnsignedByteTypeToARGBType( image );
+		}
+		else if( imageType instanceof ARGBType && type instanceof RealType )
+		{
+			return convertARGBTypeToRealType( image, (RealType) type );
+		}
+		throw new IllegalStateException( "Cannot convert between given pixel types: " +
+				imageType.getClass().getSimpleName() + ", " + type.getClass().getSimpleName());
+	}
+
+	private static ImgPlus< ARGBType > convertUnsignedByteTypeToARGBType( ImgPlus<UnsignedByteType> image )
+	{
+		if( ImgPlusViews.canFuseColor( image ) 	)
+			return ImgPlusViews.fuseColor( image );
+		RandomAccessibleInterval< ARGBType > convertedRAI = Converters.convertRAI( image.getImg(),
+				(i, o) -> { int value = i.get() ; o.set( ARGBType.rgba( value, value, value, 255 ) ); },
+				new ARGBType() );
+		Img< ARGBType > convertedImg = ImgView.wrap( convertedRAI, null );
+		return new ImgPlus<>( convertedImg, image );
+	}
+
+	private static < T extends NativeType< T > > ImgPlus< T > convertBetweenRealType( ImgPlus image, RealType type )
+	{
+		RandomAccessibleInterval< T > convertedRAI = RealTypeConverters.convert( image, type );
+		Img< T > convertedImg = ImgView.wrap( convertedRAI, null );
+		return new ImgPlus<>( convertedImg, image );
+	}
+
+	private static < T extends RealType<T> > ImgPlus<T> convertARGBTypeToRealType( ImgPlus<ARGBType> image, T type )
+	{
+		RandomAccessibleInterval< T > convertedRAI = RealTypeConverters.convert( Converters.argbChannels( image ), type );
+		Img< T > convertedImg = ImgView.wrap( convertedRAI, null );
+		int n = image.numDimensions();
+		CalibratedAxis[] axis = new CalibratedAxis[ n + 1 ];
+		for ( int i = 0; i < n; i++ )
+		{
+			axis[i]	= image.axis( i );
+		}
+		axis[n] = new DefaultLinearAxis( Axes.CHANNEL );
+		return new ImgPlus<>( convertedImg, image.getName(), axis );
 	}
 }
