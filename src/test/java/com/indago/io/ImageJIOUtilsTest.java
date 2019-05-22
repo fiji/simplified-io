@@ -92,31 +92,31 @@ public class ImageJIOUtilsTest {
 	@Ignore( "This is not expected to work for all images. ")
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
-	public void testLoadImagesWithIJ1() {
-		testLoadImages( "testLoadImagesWithIJ1", file -> ImageJIOUtils.loadImageWithIJ1( file ) );
+	public void testLoadImageWithIJ1() {
+		testLoadImage( "testLoadImagesWithIJ1", file -> ImageJIOUtils.loadImageWithIJ1( file ) );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
-	public void testLoadImagesWithIJ() {
-		testLoadImages( "testLoadImagesWithIJ", file -> ImageJIOUtils.loadImageWithIJ( file, null ) );
+	public void testLoadImageWithSCIFIO() {
+		testLoadImage( "testLoadImagesWithSCIFIO", file -> ImageJIOUtils.loadImageWithSCIFIO( file, null ) );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
-	public void testLoadImagesWithBioFormats() {
-		testLoadImages( "testLoadImagesWithBioFormats", file -> ImageJIOUtils.loadImageWithBioFormats( file ) );
+	public void testLoadImageWithBioFormats() {
+		testLoadImage( "testLoadImagesWithBioFormats", file -> ImageJIOUtils.loadImageWithBioFormats( file ) );
 	}
 
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
-	public void testLoadImages() {
-		testLoadImages( "testLoadImages", file -> ImageJIOUtils.loadImage( file ) );
+	public void testLoadImage() {
+		testLoadImage( "testLoadImages", file -> ImageJIOUtils.loadImage( file ) );
 	}
 
-	private void testLoadImages( String title, Function< File, ImgPlus > loadImageFunction )
+	private void testLoadImage( String title, Function< File, ImgPlus > loadImageFunction )
 	{
 		System.out.println( "******* " + title );
 		System.out.println( "Reading:" + imageFile.getName() );
