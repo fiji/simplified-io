@@ -35,10 +35,7 @@ public class ImageJIOUtils {
 	 * Loads an image using ImageJ1, then wraps it into an ImgPlus object
 	 * Returns null if the image is not in a supported format.
 	 * Quick and dirty it either works or does not
-	 * 
-	 * @param input
-	 *            File
-	 * @return ImgPlus object
+	 *
 	 * @see net.imagej.ImgPlus
 	 * @see ij.IJ#openImage(String)
 	 */
@@ -54,14 +51,9 @@ public class ImageJIOUtils {
 	 * 
 	 * Loads an image using SCIFIO
 	 * 
-	 * @param input
-	 *            File
-	 * @param context,
-	 *            can be null
-	 * 
 	 * @return ImgPlus object
 	 * @see net.imagej.ImgPlus
-	 * @see org.java.Context
+	 * @see org.scijava.Context
 	 */
 	@SuppressWarnings( "rawtypes" )
 	public static ImgPlus loadImageWithSCIFIO( final File imgFile, Context context ) {
@@ -83,9 +75,6 @@ public class ImageJIOUtils {
 	/**
 	 * Loads an image using BioFormats
 	 * 
-	 * @param input
-	 *            File
-	 * @return ImgPlus object
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
@@ -117,13 +106,6 @@ public class ImageJIOUtils {
 	/**
 	 * Loads an image into an ImgPlus object
 	 * 
-	 * @param input
-	 *            File
-	 * @param context
-	 *            can be null, only used by IJ
-	 * 
-	 * 
-	 * @return ImgPlus object
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
