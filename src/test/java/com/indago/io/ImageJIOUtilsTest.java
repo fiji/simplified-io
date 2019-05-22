@@ -112,14 +112,8 @@ public class ImageJIOUtilsTest {
 
 	@SuppressWarnings( { "rawtypes" } )
 	@Test
-	public void testLoadImagesChooseIJ1() {
-		testLoadImages( "testLoadImagesChooseIJ1", file -> ImageJIOUtils.loadImage( file, true ) );
-	}
-
-	@SuppressWarnings( { "rawtypes" } )
-	@Test
-	public void testLoadImagesChooseIJ() {
-		testLoadImages( "testLoadImagesChooseIJ", file -> ImageJIOUtils.loadImage( file, false ) );
+	public void testLoadImages() {
+		testLoadImages( "testLoadImages", file -> ImageJIOUtils.loadImage( file ) );
 	}
 
 	private void testLoadImages( String title, Function< File, ImgPlus > loadImageFunction )
