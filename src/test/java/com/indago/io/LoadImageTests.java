@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 @RunWith(Parameterized.class)
-public class ImageJIOUtilsLoadImagesTest
+public class LoadImageTests
 {
 
 	private final File imageFile;
@@ -76,6 +76,8 @@ public class ImageJIOUtilsLoadImagesTest
 	private static Collection< File > listImageFiles()
 	{
 		final IOFileFilter zips = new IOFileFilter() {
+			
+			@Override
 			public boolean accept(File file) {
 				return !file.getName().endsWith( "zip" ) && !file.isDirectory() && !file.getName().startsWith( "." );
 			}
@@ -89,32 +91,28 @@ public class ImageJIOUtilsLoadImagesTest
 		return FileUtils.listFiles( new File( imagesPath ), zips, null );
 	}
 
-	public ImageJIOUtilsLoadImagesTest( File imageFile ) {
+	public LoadImageTests( File imageFile ) {
 		this.imageFile = imageFile;
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
-	@SuppressWarnings( { "rawtypes" } )
 	@Test
 	public void testLoadImageWithIJ1() {
 		testLoadImage( "testLoadImagesWithIJ1", file -> ImageJIOUtils.loadImageWithIJ1( file ) );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
-	@SuppressWarnings( { "rawtypes" } )
 	@Test
 	public void testLoadImageWithSCIFIO() {
 		testLoadImage( "testLoadImagesWithSCIFIO", file -> ImageJIOUtils.loadImageWithSCIFIO( file ) );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
-	@SuppressWarnings( { "rawtypes" } )
 	@Test
 	public void testLoadImageWithBioFormats() {
 		testLoadImage( "testLoadImagesWithBioFormats", file -> ImageJIOUtils.loadImageWithBioFormats( file ) );
 	}
 
-	@SuppressWarnings( { "rawtypes" } )
 	@Test
 	public void testLoadImage() {
 		testLoadImage( "testLoadImages", file -> ImageJIOUtils.loadImage( file ) );
@@ -132,6 +130,7 @@ public class ImageJIOUtilsLoadImagesTest
 		assertEquals( true, image.firstElement() instanceof ARGBType );
 	}
 
+	@SuppressWarnings( "rawtypes" )
 	private void testLoadImage( String title, Function< File, ImgPlus > loadImageFunction )
 	{
 		System.out.println( "******* " + title );
