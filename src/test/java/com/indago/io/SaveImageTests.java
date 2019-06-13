@@ -10,6 +10,7 @@ import java.util.function.BiConsumer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -52,12 +53,14 @@ public class SaveImageTests {
 		testSaveImage( "tif", "testSaveTifImageWithJ1", ImageJIOUtils::saveImageWithIJ1 );
 	}
 	
+	@Ignore
 	@Test
 	public void testSaveTifImageWithSCIFIO() throws IOException {
 
 		testSaveImage( "tif", "testSaveTifImageWithSCIFIO", ImageJIOUtils::saveImageWithSCIFIO );
 	}
 
+	@Ignore
 	@Test
 	public void testSaveTifToJpgImageWithJ1() throws IOException {
 
@@ -77,6 +80,7 @@ public class SaveImageTests {
 	}
 	
 	@Test
+	@Ignore
 	public void testSaveJpgImageWithSCFIO() throws IOException {
 
 		testSaveImage( "jpg", "testSaveJpgImageWithSCIFIO", ImageJIOUtils::saveImageWithSCIFIO );
@@ -110,12 +114,10 @@ public class SaveImageTests {
 			outputFile.deleteOnExit();
 			String outputFilePath = outputFile.getPath();
 			ImgPlus< ? > originalImage = ImageJIOUtils.loadImage( image);
-			//ImgPlus< ? > originalImage = ImageJIOUtils.convert(ImageJIOUtils.loadImage( image), new FloatType());
 			System.out.println( "Writing:" + image.getName() );
 			StopWatch watch = StopWatch.createAndStart();
 			saveImageFunction.accept( originalImage, outputFilePath );
 			ImgPlus< ? > savedImage = ImageJIOUtils.loadImage( outputFile );
-			//ImgPlus< ? > savedImage = ImageJIOUtils.convert(ImageJIOUtils.loadImage( outputFile ), new FloatType());
 			System.out.println( "Time elapsed " + watch.toString() );
 			try {
 			ImgLib2Assert.assertImageEquals(
