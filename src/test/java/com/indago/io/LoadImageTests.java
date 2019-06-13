@@ -125,6 +125,7 @@ public class LoadImageTests
 	}
 
 	@Test
+	@Ignore
 	public void testLoadImageWithARGBType() {
 		ImgPlus< ARGBType > image = ImageJIOUtils.loadImage( imageFile , new ARGBType() );
 		assertEquals( true, image.firstElement() instanceof ARGBType );
