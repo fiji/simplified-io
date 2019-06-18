@@ -15,6 +15,10 @@ import java.util.stream.IntStream;
 
 public class Utils
 {
+	// TODO: This needs to be improved, we need a method that
+	// takes an ImgPlus and a somehow specified axes order and
+	// return an ImgPlus with this axes order.
+	// The method could be called sortAxes
 	public static < T > RandomAccessibleInterval< T > ensureXYCZT( final ImgPlus< T > imgPlus )
 	{
 		final int[] axes = getPermutation( getAxes( imgPlus ) );
