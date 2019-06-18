@@ -27,7 +27,7 @@ import static org.junit.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 @RunWith(Parameterized.class)
-public class LoadImageTests
+public class OpenImageTests
 {
 
 	private final File imageFile;
@@ -91,7 +91,7 @@ public class LoadImageTests
 		return FileUtils.listFiles( new File( imagesPath ), zips, null );
 	}
 
-	public LoadImageTests( File imageFile ) {
+	public OpenImageTests( File imageFile ) {
 		this.imageFile = imageFile;
 	}
 
