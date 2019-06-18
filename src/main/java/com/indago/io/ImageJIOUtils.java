@@ -178,43 +178,19 @@ public class ImageJIOUtils {
 	 * The specified image is saved as a "tif" if there is no extension.
 	 **/
 	public static void saveImageWithIJ1( ImgPlus< ? > img, String path ) {
+		path = addTifAsDefaultExtension( path );
+
+		IJ.save( ImgToVirtualStack.wrap( img ), path );
+	}
+
+	private static String addTifAsDefaultExtension( String path )
+	{
 		String ext = FileUtils.getExtension( path ).toLowerCase();
 
 		if ( ext.isEmpty() ) {
-			ext = "tif";
 			path += ".tif";
 		}
-
-		ImagePlus wrappedImage = ImgToVirtualStack.wrap( img );
-
-		if ( ext.equalsIgnoreCase( "tif" ) || ext.equalsIgnoreCase( "tiff" ) ) {
-			FileSaver fs = new FileSaver( wrappedImage );
-			boolean ok;
-			if ( wrappedImage.getStackSize() > 1 )
-				ok = fs.saveAsTiffStack( path );
-			else
-				ok = fs.saveAsTiff( path );
-			if ( !ok )
-				throw new ImageWriteException( "Failed to save image to " + path );
-			else
-				return;
-
-		} else if ( ext.equalsIgnoreCase( "jpg" ) || ext.equalsIgnoreCase( "jpeg" ) ) {
-
-			String error = JpegWriter.save( wrappedImage, path, FileSaver.getJpegQuality() );
-
-			if ( error != null )
-				throw new ImageWriteException( "Error while saving tif image " + error );
-			else
-				return;
-
-		} else if ( ext.equalsIgnoreCase( "png" ) ) {
-
-			IJ.run( wrappedImage, "PNG...", "save=" + path );
-
-		} else {
-			throw new ImageWriteException( "Unsupported format \"" + ext + "\"" );
-		}
+		return path;
 	}
 
 	/**
@@ -226,25 +202,17 @@ public class ImageJIOUtils {
 	 **/
 	@SuppressWarnings( "unchecked" )
 	public static void saveImageWithSCIFIO( ImgPlus< ? > img, String path ) {
-		String ext = FileUtils.getExtension( path ).toLowerCase();
-
-		if ( ext.isEmpty() ) {
-			ext = "tif";
-			path += ".tif";
-		}
+		path = addTifAsDefaultExtension( path );
 
 		try {
-			Collection< Class< ? extends Service > > services =
-					new ArrayList< Class< ? extends Service > >();
-			services.add( DefaultIOService.class );
-			services.add( DataTypeService.class );
+			Context context = new Context( DefaultIOService.class, DataTypeService.class );
 			DefaultDataset dataset =
-					new DefaultDataset( new Context( services ), ( ImgPlus< ? extends RealType< ? > > ) img );
+					new DefaultDataset( context, ( ImgPlus< ? extends RealType< ? > > ) img );
 			getScifio().datasetIO().save( dataset, path );
 
 		} catch ( IOException e ) {
 
-			throw new ImageWriteException( "Incompatible type exception: " + e.getMessage() );
+			throw new ImageWriteException( e );
 		}
 	}
 
