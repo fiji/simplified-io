@@ -48,6 +48,8 @@ public class ImageJIOUtils {
 
 	private static SCIFIO scifio;
 
+	private static final Context context = new Context( DefaultIOService.class, DataTypeService.class );
+
 	/**
 	 * Loads an image using ImageJ1, then wraps it into an ImgPlus object
 	 * Returns null if the image is not in a supported format.
@@ -205,15 +207,24 @@ public class ImageJIOUtils {
 		path = addTifAsDefaultExtension( path );
 
 		try {
-			Context context = new Context( DefaultIOService.class, DataTypeService.class );
 			DefaultDataset dataset =
-					new DefaultDataset( context, ( ImgPlus< ? extends RealType< ? > > ) img );
+					new DefaultDataset( context, convertToRealType( img ) );
 			getScifio().datasetIO().save( dataset, path );
 
 		} catch ( IOException e ) {
 
 			throw new ImageWriteException( e );
 		}
+	}
+
+	private static ImgPlus<? extends RealType<?>> convertToRealType( ImgPlus<?> img )
+	{
+		Object type = img.firstElement();
+		if( type instanceof ARGBType )
+			return convertARGBTypeToRealType( (ImgPlus<ARGBType>) img, new UnsignedByteType() );
+		if( type instanceof RealType )
+			return ( ImgPlus< ? extends RealType< ? > > ) img;
+		throw new ImageWriteException( "Writing doesn't support pixel type: " + type.getClass().getSimpleName() );
 	}
 
 	private static ImgPlus< ARGBType >

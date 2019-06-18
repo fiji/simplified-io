@@ -119,13 +119,9 @@ public class SaveImageTests {
 			saveImageFunction.accept( originalImage, outputFilePath );
 			ImgPlus< ? > savedImage = ImageJIOUtils.loadImage( outputFile );
 			System.out.println( "Time elapsed " + watch.toString() );
-			try {
 			ImgLib2Assert.assertImageEquals(
 					( Img ) savedImage.getImg(),
 					( Img ) originalImage.getImg() );
-			} catch (ImageWriteException | AssertionError e) {
-				System.out.println( e.getMessage() );
-			}
 		}
 	}
 
