@@ -5,7 +5,6 @@ import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import net.imagej.ImgPlus;
 import net.imglib2.RandomAccessibleInterval;
-import net.imglib2.img.display.imagej.ImgPlusViews;
 import net.imglib2.test.ImgLib2Assert;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.StopWatch;
@@ -78,11 +77,11 @@ public class SaveImageTests {
 		File outputFile = File.createTempFile( "test", "." + outExt );
 		outputFile.deleteOnExit();
 		String outputFilePath = outputFile.getPath();
-		ImgPlus< ? > originalImage = ImageJIOUtils.loadImage( image);
+		ImgPlus< ? > originalImage = ImageJIOUtils.openImage( image);
 		System.out.println( "Writing:" + image.getName() );
 		StopWatch watch = StopWatch.createAndStart();
 		saveImageFunction.accept( originalImage, outputFilePath );
-		ImgPlus< ? > savedImage = ImageJIOUtils.loadImage( outputFile );
+		ImgPlus< ? > savedImage = ImageJIOUtils.openImage( outputFile );
 		System.out.println( "Time elapsed " + watch.toString() );
 		assertImageEquals( originalImage, savedImage );
 	}

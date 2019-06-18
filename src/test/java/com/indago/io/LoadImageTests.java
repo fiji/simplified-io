@@ -98,36 +98,36 @@ public class LoadImageTests
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithIJ1() {
-		testLoadImage( "testLoadImagesWithIJ1", file -> ImageJIOUtils.loadImageWithIJ1( file ) );
+		testLoadImage( "testLoadImagesWithIJ1", file -> ImageJIOUtils.openImageWithIJ1( file ) );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithSCIFIO() {
-		testLoadImage( "testLoadImagesWithSCIFIO", file -> ImageJIOUtils.loadImageWithSCIFIO( file ) );
+		testLoadImage( "testLoadImagesWithSCIFIO", file -> ImageJIOUtils.openImageWithSCIFIO( file ) );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithBioFormats() {
-		testLoadImage( "testLoadImagesWithBioFormats", file -> ImageJIOUtils.loadImageWithBioFormats( file ) );
+		testLoadImage( "testLoadImagesWithBioFormats", file -> ImageJIOUtils.openImageWithBioFormats( file ) );
 	}
 
 	@Test
 	public void testLoadImage() {
-		testLoadImage( "testLoadImages", file -> ImageJIOUtils.loadImage( file ) );
+		testLoadImage( "testLoadImages", file -> ImageJIOUtils.openImage( file ) );
 	}
 
 	@Test
 	public void testLoadImageWithRealType() {
-		ImgPlus< DoubleType > image = ImageJIOUtils.loadImage( imageFile , new DoubleType() );
+		ImgPlus< DoubleType > image = ImageJIOUtils.openImage( imageFile , new DoubleType() );
 		assertEquals( true, image.firstElement() instanceof DoubleType );
 	}
 
 	@Test
 	@Ignore
 	public void testLoadImageWithARGBType() {
-		ImgPlus< ARGBType > image = ImageJIOUtils.loadImage( imageFile , new ARGBType() );
+		ImgPlus< ARGBType > image = ImageJIOUtils.openImage( imageFile , new ARGBType() );
 		assertEquals( true, image.firstElement() instanceof ARGBType );
 	}
 

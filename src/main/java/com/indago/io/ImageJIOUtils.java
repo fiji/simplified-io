@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.StringJoiner;
 
-import org.scijava.Context;
-import org.scijava.io.DefaultIOService;
 import org.scijava.util.FileUtils;
 
 import ij.IJ;
@@ -23,7 +21,6 @@ import net.imagej.ImgPlus;
 import net.imagej.axis.Axes;
 import net.imagej.axis.CalibratedAxis;
 import net.imagej.axis.DefaultLinearAxis;
-import net.imagej.types.DataTypeService;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.converter.Converters;
 import net.imglib2.converter.RealTypeConverters;
@@ -51,7 +48,8 @@ public class ImageJIOUtils {
 	 * @see ij.IJ#openImage(String)
 	 */
 	@SuppressWarnings( { "unchecked", "rawtypes" } )
-	public static ImgPlus loadImageWithIJ1( final File imgFile ) {
+	static ImgPlus openImageWithIJ1( final File imgFile ) {
+		// package private to allow testing
 		final Opener opnr = new Opener();
 		ImagePlus image = opnr.openImage( imgFile.getAbsolutePath() );
 		if ( image == null )
@@ -68,7 +66,8 @@ public class ImageJIOUtils {
 	 * @see org.scijava.Context
 	 */
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImageWithSCIFIO( final File imgFile ) {
+	static ImgPlus openImageWithSCIFIO( final File imgFile ) {
+		// package private to allow testing
 		try {
 			SCIFIO scifio = getScifio();
 			Dataset dataset = scifio.datasetIO().open( imgFile.getAbsolutePath() );
@@ -84,7 +83,8 @@ public class ImageJIOUtils {
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImageWithBioFormats( final File imgFile ) {
+	static ImgPlus openImageWithBioFormats( final File imgFile ) {
+		// package private to allow testing
 		try {
 			ImporterOptions options = new ImporterOptions();
 			if ( Macro.getOptions() == null ) {
@@ -109,7 +109,7 @@ public class ImageJIOUtils {
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus loadImage( final File imgFile ) {
+	public static ImgPlus openImage( final File imgFile ) {
 
 		if ( !imgFile.exists() )
 			throw new ImageOpenException( "Image file doesn't exist: " + imgFile );
@@ -117,19 +117,19 @@ public class ImageJIOUtils {
 		StringJoiner messages = new StringJoiner( "\n" );
 
 		try {
-			return ImageJIOUtils.loadImageWithIJ1( imgFile );
+			return ImageJIOUtils.openImageWithIJ1( imgFile );
 		} catch ( Exception e ) {
 			messages.add( "ImageJ1 Exception: " + e.getMessage() );
 		}
 
 		try {
-			return ImageJIOUtils.loadImageWithSCIFIO( imgFile );
+			return ImageJIOUtils.openImageWithSCIFIO( imgFile );
 		} catch ( Exception e ) {
 			messages.add( "SCIFIO Exception: " + e.getMessage() );
 		}
 
 		try {
-			return ImageJIOUtils.loadImageWithBioFormats( imgFile );
+			return ImageJIOUtils.openImageWithBioFormats( imgFile );
 		} catch ( Exception e ) {
 			messages.add( "BioFormats Exception: " + e.getMessage() );
 		}
@@ -137,8 +137,8 @@ public class ImageJIOUtils {
 		throw new ImageOpenException( "Couldn't open image file: \"" + imgFile + "\"\n" + "Exceptions:\n" + messages );
 	}
 
-	public static < T extends NativeType< T > > ImgPlus< T > loadImage( File file, T type ) {
-		return convert( loadImage( file ), type );
+	public static < T extends NativeType< T > > ImgPlus< T > openImage( File file, T type ) {
+		return convert( openImage( file ), type );
 	}
 
 	@SuppressWarnings( { "rawtypes", "unchecked" } )
@@ -162,18 +162,7 @@ public class ImageJIOUtils {
 	 * The specified image is saved as a "tif" if there is no extension.
 	 **/
 	public static void saveImage( ImgPlus< ? > img, String path ) {
-		saveImageWithIJ1( img, path );
-
-	}
-
-	/**
-	 * Saves the specified image to the specified file path.
-	 * Supported formats are "tif", ".jpg", ".png".
-	 * The specified image is saved as a "tif" if there is no extension.
-	 **/
-	public static void saveImageWithIJ1( ImgPlus< ? > img, String path ) {
 		path = addTifAsDefaultExtension( path );
-
 		IJ.save( ImgToVirtualStack.wrap( img ), path );
 	}
 
