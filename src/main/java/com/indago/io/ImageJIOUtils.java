@@ -56,7 +56,7 @@ public class ImageJIOUtils {
 		ImagePlus image = opnr.openImage( imgFile.getAbsolutePath() );
 		if ( image == null )
 			throw new ImageOpenException( "new ij.io.Opener().openImage() returned null." );
-		return new ImgPlus( ImagePlusAdapter.wrapImgPlus( image ) );
+		return ImagePlusAdapter.wrapImgPlus( image );
 	}
 
 	/**
