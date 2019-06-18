@@ -121,7 +121,7 @@ class MultiImageReader implements Runnable {
 
 	@SuppressWarnings( { "rawtypes", "unchecked" } )
 	public void run() {
-		ImgPlus< ? > readImage = ImageJIOUtils.openImage( file );
+		ImgPlus< ? > readImage = ImageJIOUtils.openImage( file.getAbsolutePath() );
 		ImgLib2Assert.assertImageEquals( ( Img ) readImage.getImg(), ( Img ) imgPlus.getImg() );
 	}
 }

@@ -98,46 +98,46 @@ public class LoadImageTests
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithIJ1() {
-		testLoadImage( "testLoadImagesWithIJ1", file -> ImageJIOUtils.openImageWithIJ1( file ) );
+		testLoadImage( "testLoadImagesWithIJ1", ImageJIOUtils::openImageWithIJ1 );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithSCIFIO() {
-		testLoadImage( "testLoadImagesWithSCIFIO", file -> ImageJIOUtils.openImageWithSCIFIO( file ) );
+		testLoadImage( "testLoadImagesWithSCIFIO", ImageJIOUtils::openImageWithSCIFIO );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithBioFormats() {
-		testLoadImage( "testLoadImagesWithBioFormats", file -> ImageJIOUtils.openImageWithBioFormats( file ) );
+		testLoadImage( "testLoadImagesWithBioFormats", ImageJIOUtils::openImageWithBioFormats );
 	}
 
 	@Test
 	public void testLoadImage() {
-		testLoadImage( "testLoadImages", file -> ImageJIOUtils.openImage( file ) );
+		testLoadImage( "testLoadImages", ImageJIOUtils::openImage );
 	}
 
 	@Test
 	public void testLoadImageWithRealType() {
-		ImgPlus< DoubleType > image = ImageJIOUtils.openImage( imageFile , new DoubleType() );
+		ImgPlus< DoubleType > image = ImageJIOUtils.openImage( imageFile.getAbsolutePath() , new DoubleType() );
 		assertEquals( true, image.firstElement() instanceof DoubleType );
 	}
 
 	@Test
 	@Ignore
 	public void testLoadImageWithARGBType() {
-		ImgPlus< ARGBType > image = ImageJIOUtils.openImage( imageFile , new ARGBType() );
+		ImgPlus< ARGBType > image = ImageJIOUtils.openImage( imageFile.getAbsolutePath() , new ARGBType() );
 		assertEquals( true, image.firstElement() instanceof ARGBType );
 	}
 
 	@SuppressWarnings( "rawtypes" )
-	private void testLoadImage( String title, Function< File, ImgPlus > loadImageFunction )
+	private void testLoadImage( String title, Function< String, ImgPlus > loadImageFunction )
 	{
 		System.out.println( "******* " + title );
 		System.out.println( "Reading:" + imageFile.getName() );
 		StopWatch watch = StopWatch.createAndStart();
-		ImgPlus img2 = loadImageFunction.apply( imageFile );
+		ImgPlus img2 = loadImageFunction.apply( imageFile.getAbsolutePath() );
 		System.out.println( "Time elapsed " + watch.toString() );
 		assertNotNull( img2 );
 	}
