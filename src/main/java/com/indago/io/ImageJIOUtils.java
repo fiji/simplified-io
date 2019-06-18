@@ -158,12 +158,22 @@ public class ImageJIOUtils {
 
 	/**
 	 * Saves the specified image to the specified file path.
-	 * Supported formats are "tif", ".jpg", ".png".
 	 * The specified image is saved as a "tif" if there is no extension.
+	 * <p>
+	 * The method also accepts {@link ImgPlus} and stores the metadata.
 	 **/
-	public static void saveImage( ImgPlus< ? > img, String path ) {
+	public static void saveImage( RandomAccessibleInterval< ? > img, String path ) {
 		path = addTifAsDefaultExtension( path );
-		IJ.save( ImgToVirtualStack.wrap( img ), path );
+		IJ.save( ImgToVirtualStack.wrap( toImgPlus( img ) ), path );
+	}
+
+	private static <T> ImgPlus<T> toImgPlus( RandomAccessibleInterval<T> image )
+	{
+		if( image instanceof ImgPlus )
+			return ( ImgPlus<T> ) image;
+		if( image instanceof Img )
+			return new ImgPlus<>( ( Img< T > ) image );
+		return new ImgPlus<>( ImgView.wrap( (RandomAccessibleInterval) image, null ));
 	}
 
 	private static String addTifAsDefaultExtension( String path )
