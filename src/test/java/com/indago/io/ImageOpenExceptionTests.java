@@ -10,7 +10,7 @@ public class ImageOpenExceptionTests {
 	@Test( expected = ImageOpenException.class )
 	public void testMissingFile() throws IOException {
 		File file = File.createTempFile( "image-", ".tif" );
-		ImageJIOUtils.openImage( file );
+		ImageJIOUtils.openImage( file.getAbsolutePath() );
 	}
 
 	@Test( expected = ImageOpenException.class )
@@ -18,6 +18,6 @@ public class ImageOpenExceptionTests {
 		File file = File.createTempFile( "image-", ".tif" );
 		file.createNewFile();
 		file.deleteOnExit();
-		ImageJIOUtils.openImage( file );
+		ImageJIOUtils.openImage( file.getAbsolutePath() );
 	}
 }

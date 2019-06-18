@@ -47,20 +47,17 @@ public class SaveImageTests {
 
 	@Test
 	public void testSaveTifImageWithJ1() throws IOException {
-
-		testSaveImage( "tif", ImageJIOUtils::saveImage);
+		testSaveImage( "tif", ImageJIOUtils::saveImage );
 	}
 
 	@Test
 	public void testSaveJpgImageWithJ1() throws IOException {
-
-		testSaveImage( "jpg", ImageJIOUtils::saveImage);
+		testSaveImage( "jpg", ImageJIOUtils::saveImage );
 	}
 
 	@Test
 	public void testSavePngImageWithJ1() throws IOException {
-
-		testSaveImage( "png", ImageJIOUtils::saveImage);
+		testSaveImage( "png", ImageJIOUtils::saveImage );
 	}
 
 	private void testSaveImage( String outExt, BiConsumer< ImgPlus< ? >, String > saveImageFunction ) throws IOException {
@@ -76,11 +73,11 @@ public class SaveImageTests {
 		File outputFile = File.createTempFile( "test", "." + outExt );
 		outputFile.deleteOnExit();
 		String outputFilePath = outputFile.getPath();
-		ImgPlus< ? > originalImage = ImageJIOUtils.openImage( image);
+		ImgPlus< ? > originalImage = ImageJIOUtils.openImage( image.getAbsolutePath() );
 		System.out.println( "Writing:" + image.getName() );
 		StopWatch watch = StopWatch.createAndStart();
 		saveImageFunction.accept( originalImage, outputFilePath );
-		ImgPlus< ? > savedImage = ImageJIOUtils.openImage( outputFile );
+		ImgPlus< ? > savedImage = ImageJIOUtils.openImage( outputFile.getAbsolutePath() );
 		System.out.println( "Time elapsed " + watch.toString() );
 		assertImageEquals( originalImage, savedImage );
 	}

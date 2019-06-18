@@ -48,10 +48,10 @@ public class ImageJIOUtils {
 	 * @see ij.IJ#openImage(String)
 	 */
 	@SuppressWarnings( { "unchecked", "rawtypes" } )
-	static ImgPlus openImageWithIJ1( final File imgFile ) {
+	static ImgPlus openImageWithIJ1( final String path ) {
 		// package private to allow testing
 		final Opener opnr = new Opener();
-		ImagePlus image = opnr.openImage( imgFile.getAbsolutePath() );
+		ImagePlus image = opnr.openImage( path );
 		if ( image == null )
 			throw new ImageOpenException( "new ij.io.Opener().openImage() returned null." );
 		return ImagePlusAdapter.wrapImgPlus( image );
@@ -66,11 +66,11 @@ public class ImageJIOUtils {
 	 * @see org.scijava.Context
 	 */
 	@SuppressWarnings( "rawtypes" )
-	static ImgPlus openImageWithSCIFIO( final File imgFile ) {
+	static ImgPlus openImageWithSCIFIO( final String path ) {
 		// package private to allow testing
 		try {
 			SCIFIO scifio = getScifio();
-			Dataset dataset = scifio.datasetIO().open( imgFile.getAbsolutePath() );
+			Dataset dataset = scifio.datasetIO().open( path );
 			return dataset.getImgPlus();
 		} catch ( IOException e ) {
 			throw new ImageOpenException( e );
@@ -83,14 +83,14 @@ public class ImageJIOUtils {
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
-	static ImgPlus openImageWithBioFormats( final File imgFile ) {
+	static ImgPlus openImageWithBioFormats( final String path ) {
 		// package private to allow testing
 		try {
 			ImporterOptions options = new ImporterOptions();
 			if ( Macro.getOptions() == null ) {
 				options.loadOptions();
 			}
-			options.parseArg( imgFile.getAbsolutePath() );
+			options.parseArg( path );
 			options.checkObsoleteOptions();
 			ImportProcess process = new ImportProcess( options );
 			process.execute();
@@ -109,36 +109,36 @@ public class ImageJIOUtils {
 	 * @see net.imagej.ImgPlus
 	 */
 	@SuppressWarnings( "rawtypes" )
-	public static ImgPlus openImage( final File imgFile ) {
-
-		if ( !imgFile.exists() )
-			throw new ImageOpenException( "Image file doesn't exist: " + imgFile );
+	public static ImgPlus openImage( final String path ) {
 
 		StringJoiner messages = new StringJoiner( "\n" );
 
 		try {
-			return ImageJIOUtils.openImageWithIJ1( imgFile );
+			return ImageJIOUtils.openImageWithIJ1( path );
 		} catch ( Exception e ) {
 			messages.add( "ImageJ1 Exception: " + e.getMessage() );
 		}
 
 		try {
-			return ImageJIOUtils.openImageWithSCIFIO( imgFile );
+			return ImageJIOUtils.openImageWithSCIFIO( path );
 		} catch ( Exception e ) {
 			messages.add( "SCIFIO Exception: " + e.getMessage() );
 		}
 
 		try {
-			return ImageJIOUtils.openImageWithBioFormats( imgFile );
+			return ImageJIOUtils.openImageWithBioFormats( path );
 		} catch ( Exception e ) {
 			messages.add( "BioFormats Exception: " + e.getMessage() );
 		}
 
-		throw new ImageOpenException( "Couldn't open image file: \"" + imgFile + "\"\n" + "Exceptions:\n" + messages );
+		if ( !new File(path).exists() )
+			throw new ImageOpenException( "Image file doesn't exist: " + path );
+
+		throw new ImageOpenException( "Couldn't open image file: \"" + path + "\"\n" + "Exceptions:\n" + messages );
 	}
 
-	public static < T extends NativeType< T > > ImgPlus< T > openImage( File file, T type ) {
-		return convert( openImage( file ), type );
+	public static < T extends NativeType< T > > ImgPlus< T > openImage( String path, T type ) {
+		return convert( openImage( path ), type );
 	}
 
 	@SuppressWarnings( { "rawtypes", "unchecked" } )
