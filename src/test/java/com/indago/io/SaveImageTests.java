@@ -4,6 +4,8 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import net.imagej.ImgPlus;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.img.display.imagej.ImgPlusViews;
 import net.imglib2.test.ImgLib2Assert;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.StopWatch;
@@ -88,12 +90,9 @@ public class SaveImageTests {
 	private void assertImageEquals( ImgPlus< ? > expected, ImgPlus< ? > actual )
 	{
 		if ( isRealType( expected ) && isRealType( actual ) )
-			ImgLib2Assert.assertImageEqualsRealType( ( ImgPlus ) expected, ( ImgPlus ) actual, 0.0 );
+			ImgLib2Assert.assertImageEqualsRealType( ( RandomAccessibleInterval ) Utils.ensureXYCZT( expected ), ( RandomAccessibleInterval ) Utils.ensureXYCZT( actual ), 0.0 );
 		else
-			ImgLib2Assert.assertImageEquals(
-					expected.getImg(),
-					actual.getImg(),
-					Object::equals );
+			ImgLib2Assert.assertImageEquals( Utils.ensureXYCZT( expected ), Utils.ensureXYCZT( actual ), Object::equals );
 	}
 
 	private boolean isRealType( ImgPlus<?> expected )
