@@ -50,7 +50,7 @@ public class SaveImageTests {
 	@Test
 	public void testSaveTifImageWithJ1() throws IOException {
 
-		testSaveImage( "tif", "testSaveTifImageWithJ1", ImageJIOUtils::saveImageWithIJ1 );
+		testSaveImage( "tif", "testSaveTifImageWithIJ1", ImageJIOUtils::saveImageWithIJ1 );
 	}
 	
 	@Ignore
