@@ -89,9 +89,9 @@ public class SaveImageTests {
 	private void assertImageEquals( ImgPlus< ? > expected, ImgPlus< ? > actual )
 	{
 		if ( isRealType( expected ) && isRealType( actual ) )
-			ImgLib2Assert.assertImageEqualsRealType( ( RandomAccessibleInterval ) Utils.ensureXYCZT( expected ), ( RandomAccessibleInterval ) Utils.ensureXYCZT( actual ), 0.0 );
+			ImgLib2Assert.assertImageEqualsRealType( ( RandomAccessibleInterval ) SortAxesUtils.ensureXYCZT( expected ), ( RandomAccessibleInterval ) SortAxesUtils.ensureXYCZT( actual ), 0.0 );
 		else
-			ImgLib2Assert.assertImageEquals( Utils.ensureXYCZT( expected ), Utils.ensureXYCZT( actual ), Object::equals );
+			ImgLib2Assert.assertImageEquals( SortAxesUtils.ensureXYCZT( expected ), SortAxesUtils.ensureXYCZT( actual ), Object::equals );
 	}
 
 	private boolean isRealType( ImgPlus<?> expected )
