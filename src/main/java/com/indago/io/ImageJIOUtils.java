@@ -2,29 +2,23 @@ package com.indago.io;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.StringJoiner;
 
 import org.scijava.Context;
 import org.scijava.io.DefaultIOService;
-import org.scijava.service.Service;
 import org.scijava.util.FileUtils;
 
 import ij.IJ;
 import ij.ImagePlus;
 import ij.Macro;
-import ij.io.FileSaver;
 import ij.io.Opener;
 import ij.plugin.ImagesToStack;
-import ij.plugin.JpegWriter;
 import io.scif.SCIFIO;
 import loci.formats.FormatException;
 import loci.plugins.in.ImagePlusReader;
 import loci.plugins.in.ImportProcess;
 import loci.plugins.in.ImporterOptions;
 import net.imagej.Dataset;
-import net.imagej.DefaultDataset;
 import net.imagej.ImgPlus;
 import net.imagej.axis.Axes;
 import net.imagej.axis.CalibratedAxis;
@@ -47,8 +41,6 @@ import net.imglib2.util.Util;
 public class ImageJIOUtils {
 
 	private static SCIFIO scifio;
-
-	private static final Context context = new Context( DefaultIOService.class, DataTypeService.class );
 
 	/**
 	 * Loads an image using ImageJ1, then wraps it into an ImgPlus object
@@ -193,38 +185,6 @@ public class ImageJIOUtils {
 			path += ".tif";
 		}
 		return path;
-	}
-
-	/**
-	 * Saves the specified image to the specified file path.
-	 * Supported formats are "tif", ".jpg", ".png".
-	 * The specified image is saved as a "tif" if there is no extension.
-	 * This method is a lot slower than the IJ1 method, it is here for
-	 * comparison....
-	 **/
-	@SuppressWarnings( "unchecked" )
-	public static void saveImageWithSCIFIO( ImgPlus< ? > img, String path ) {
-		path = addTifAsDefaultExtension( path );
-
-		try {
-			DefaultDataset dataset =
-					new DefaultDataset( context, convertToRealType( img ) );
-			getScifio().datasetIO().save( dataset, path );
-
-		} catch ( IOException e ) {
-
-			throw new ImageWriteException( e );
-		}
-	}
-
-	private static ImgPlus<? extends RealType<?>> convertToRealType( ImgPlus<?> img )
-	{
-		Object type = img.firstElement();
-		if( type instanceof ARGBType )
-			return convertARGBTypeToRealType( (ImgPlus<ARGBType>) img, new UnsignedByteType() );
-		if( type instanceof RealType )
-			return ( ImgPlus< ? extends RealType< ? > > ) img;
-		throw new ImageWriteException( "Writing doesn't support pixel type: " + type.getClass().getSimpleName() );
 	}
 
 	private static ImgPlus< ARGBType >

@@ -20,7 +20,6 @@ import ch.qos.logback.classic.LoggerContext;
 import net.imagej.ImgPlus;
 import net.imglib2.img.Img;
 import net.imglib2.test.ImgLib2Assert;
-import net.imglib2.type.numeric.real.FloatType;
 import net.imglib2.util.StopWatch;
 
 public class SaveImageTests {
@@ -55,13 +54,6 @@ public class SaveImageTests {
 	
 	@Ignore
 	@Test
-	public void testSaveTifImageWithSCIFIO() throws IOException {
-
-		testSaveImage( "tif", "testSaveTifImageWithSCIFIO", ImageJIOUtils::saveImageWithSCIFIO );
-	}
-
-	@Ignore
-	@Test
 	public void testSaveTifToJpgImageWithJ1() throws IOException {
 
 		testSaveImage( "tif", "jpg", "testSaveImageTifToJpgWithJ1", ImageJIOUtils::saveImageWithIJ1 );
@@ -79,14 +71,6 @@ public class SaveImageTests {
 		testSaveImage( "jpg", "testSaveJpgImageWithSCFIO", ImageJIOUtils::saveImageWithIJ1 );
 	}
 	
-	@Test
-	@Ignore
-	public void testSaveJpgImageWithSCFIO() throws IOException {
-
-		testSaveImage( "jpg", "testSaveJpgImageWithSCIFIO", ImageJIOUtils::saveImageWithSCIFIO );
-	}
-
-
 	@Test
 	public void testSaveJpgToTifImageWithJ1() throws IOException {
 	
