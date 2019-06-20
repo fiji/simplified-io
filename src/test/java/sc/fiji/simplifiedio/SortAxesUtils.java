@@ -1,4 +1,4 @@
-package com.indago.io;
+package sc.fiji.simplifiedio;
 
 import net.imagej.ImgPlus;
 import net.imagej.axis.Axes;

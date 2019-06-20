@@ -1,4 +1,4 @@
-package com.indago.io;
+package sc.fiji.simplifiedio;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -9,6 +9,8 @@ import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.StopWatch;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
+import sc.fiji.simplifiedio.SimplifiedIO;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.junit.BeforeClass;
@@ -98,36 +100,36 @@ public class OpenImageTests
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithIJ1() {
-		testLoadImage( "testLoadImagesWithIJ1", ImageJIOUtils::openImageWithIJ1 );
+		testLoadImage( "testLoadImagesWithIJ1", SimplifiedIO::openImageWithIJ1 );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithSCIFIO() {
-		testLoadImage( "testLoadImagesWithSCIFIO", ImageJIOUtils::openImageWithSCIFIO );
+		testLoadImage( "testLoadImagesWithSCIFIO", SimplifiedIO::openImageWithSCIFIO );
 	}
 
 	@Ignore( "This is not expected to work for all images. ")
 	@Test
 	public void testLoadImageWithBioFormats() {
-		testLoadImage( "testLoadImagesWithBioFormats", ImageJIOUtils::openImageWithBioFormats );
+		testLoadImage( "testLoadImagesWithBioFormats", SimplifiedIO::openImageWithBioFormats );
 	}
 
 	@Test
 	public void testLoadImage() {
-		testLoadImage( "testLoadImages", ImageJIOUtils::openImage );
+		testLoadImage( "testLoadImages", SimplifiedIO::openImage );
 	}
 
 	@Test
 	public void testLoadImageWithRealType() {
-		ImgPlus< DoubleType > image = ImageJIOUtils.openImage( imageFile.getAbsolutePath() , new DoubleType() );
+		ImgPlus< DoubleType > image = SimplifiedIO.openImage( imageFile.getAbsolutePath() , new DoubleType() );
 		assertEquals( true, image.firstElement() instanceof DoubleType );
 	}
 
 	@Test
 	@Ignore
 	public void testLoadImageWithARGBType() {
-		ImgPlus< ARGBType > image = ImageJIOUtils.openImage( imageFile.getAbsolutePath() , new ARGBType() );
+		ImgPlus< ARGBType > image = SimplifiedIO.openImage( imageFile.getAbsolutePath() , new ARGBType() );
 		assertEquals( true, image.firstElement() instanceof ARGBType );
 	}
 

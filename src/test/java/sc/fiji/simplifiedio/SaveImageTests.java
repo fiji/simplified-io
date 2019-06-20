@@ -1,4 +1,4 @@
-package com.indago.io;
+package sc.fiji.simplifiedio;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
@@ -9,6 +9,8 @@ import net.imglib2.test.ImgLib2Assert;
 import net.imglib2.type.numeric.RealType;
 import net.imglib2.util.StopWatch;
 import net.imglib2.util.Util;
+import sc.fiji.simplifiedio.SimplifiedIO;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.junit.BeforeClass;
@@ -47,20 +49,20 @@ public class SaveImageTests {
 	}
 
 	@Test
-	public void testSaveTifImageWithJ1() throws IOException {
-		testSaveImage( "tif", ImageJIOUtils::saveImage );
+	public void testSaveTifImage() throws IOException {
+		testSaveImage( "tif", SimplifiedIO::saveImage );
 	}
 
 	@Ignore
 	@Test
-	public void testSaveJpgImageWithJ1() throws IOException {
-		testSaveImage( "jpg", ImageJIOUtils::saveImage );
+	public void testSaveJpgImage() throws IOException {
+		testSaveImage( "jpg", SimplifiedIO::saveImage );
 	}
 
 	@Ignore
 	@Test
-	public void testSavePngImageWithJ1() throws IOException {
-		testSaveImage( "png", ImageJIOUtils::saveImage );
+	public void testSavePngImage() throws IOException {
+		testSaveImage( "png", SimplifiedIO::saveImage );
 	}
 
 	private void testSaveImage( String outExt, BiConsumer< ImgPlus< ? >, String > saveImageFunction ) throws IOException {
@@ -76,11 +78,11 @@ public class SaveImageTests {
 		File outputFile = File.createTempFile( "test", "." + outExt );
 		outputFile.deleteOnExit();
 		String outputFilePath = outputFile.getPath();
-		ImgPlus< ? > originalImage = ImageJIOUtils.openImage( image.getAbsolutePath() );
+		ImgPlus< ? > originalImage = SimplifiedIO.openImage( image.getAbsolutePath() );
 		System.out.println( "Writing:" + image.getName() );
 		StopWatch watch = StopWatch.createAndStart();
 		saveImageFunction.accept( originalImage, outputFilePath );
-		ImgPlus< ? > savedImage = ImageJIOUtils.openImage( outputFile.getAbsolutePath() );
+		ImgPlus< ? > savedImage = SimplifiedIO.openImage( outputFile.getAbsolutePath() );
 		System.out.println( "Time elapsed " + watch.toString() );
 		assertImageEquals( originalImage, savedImage );
 	}
