@@ -1,4 +1,4 @@
-package com.indago.io;
+package sc.fiji.simplifiedio;
 
 import java.io.File;
 import java.io.IOException;
@@ -35,7 +35,7 @@ import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
 import net.imglib2.util.Util;
 
-public class ImageJIOUtils {
+public class SimplifiedIO {
 
 	private static SCIFIO scifio;
 
@@ -47,13 +47,13 @@ public class ImageJIOUtils {
 	 * @see net.imagej.ImgPlus
 	 * @see ij.IJ#openImage(String)
 	 */
-	@SuppressWarnings( { "unchecked", "rawtypes" } )
+	@SuppressWarnings( { "rawtypes" } )
 	static ImgPlus openImageWithIJ1( final String path ) {
 		// package private to allow testing
 		final Opener opnr = new Opener();
 		ImagePlus image = opnr.openImage( path );
 		if ( image == null )
-			throw new ImageOpenException( "new ij.io.Opener().openImage() returned null." );
+			throw new SimplifiedIOException( "new ij.io.Opener().openImage() returned null." );
 		return ImagePlusAdapter.wrapImgPlus( image );
 	}
 
@@ -73,7 +73,7 @@ public class ImageJIOUtils {
 			Dataset dataset = scifio.datasetIO().open( path );
 			return dataset.getImgPlus();
 		} catch ( IOException e ) {
-			throw new ImageOpenException( e );
+			throw new SimplifiedIOException( e );
 		}
 	}
 
@@ -99,7 +99,7 @@ public class ImageJIOUtils {
 			ImagePlus finalImage = ImagesToStack.run( imps );
 			return ImagePlusAdapter.wrapImgPlus( finalImage );
 		} catch ( FormatException | IOException e ) {
-			throw new ImageOpenException( e );
+			throw new SimplifiedIOException( e );
 		}
 	}
 
@@ -114,27 +114,27 @@ public class ImageJIOUtils {
 		StringJoiner messages = new StringJoiner( "\n" );
 
 		try {
-			return ImageJIOUtils.openImageWithIJ1( path );
+			return SimplifiedIO.openImageWithIJ1( path );
 		} catch ( Exception e ) {
 			messages.add( "ImageJ1 Exception: " + e.getMessage() );
 		}
 
 		try {
-			return ImageJIOUtils.openImageWithSCIFIO( path );
+			return SimplifiedIO.openImageWithSCIFIO( path );
 		} catch ( Exception e ) {
 			messages.add( "SCIFIO Exception: " + e.getMessage() );
 		}
 
 		try {
-			return ImageJIOUtils.openImageWithBioFormats( path );
+			return SimplifiedIO.openImageWithBioFormats( path );
 		} catch ( Exception e ) {
 			messages.add( "BioFormats Exception: " + e.getMessage() );
 		}
 
 		if ( !new File(path).exists() )
-			throw new ImageOpenException( "Image file doesn't exist: " + path );
+			throw new SimplifiedIOException( "Image file doesn't exist: " + path );
 
-		throw new ImageOpenException( "Couldn't open image file: \"" + path + "\"\n" + "Exceptions:\n" + messages );
+		throw new SimplifiedIOException( "Couldn't open image file: \"" + path + "\"\n" + "Exceptions:\n" + messages );
 	}
 
 	public static < T extends NativeType< T > > ImgPlus< T > openImage( String path, T type ) {
@@ -167,13 +167,14 @@ public class ImageJIOUtils {
 		IJ.save( ImgToVirtualStack.wrap( toImgPlus( img ) ), path );
 	}
 
-	private static <T> ImgPlus<T> toImgPlus( RandomAccessibleInterval<T> image )
+	@SuppressWarnings( {"unchecked", "rawtypes"} )
+	private static ImgPlus<?> toImgPlus( RandomAccessibleInterval<?> image )
 	{
 		if( image instanceof ImgPlus )
-			return ( ImgPlus<T> ) image;
+			return ( ImgPlus<?> ) image;
 		if( image instanceof Img )
-			return new ImgPlus<>( ( Img< T > ) image );
-		return new ImgPlus<>( ImgView.wrap( (RandomAccessibleInterval) image, null ));
+			return new ImgPlus<>( ( Img< ? > ) image );
+		return new ImgPlus<>( ImgView.wrap( ( RandomAccessibleInterval ) image, null ));
 	}
 
 	private static String addTifAsDefaultExtension( String path )

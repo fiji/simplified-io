@@ -1,4 +1,4 @@
-package com.indago.io;
+package sc.fiji.simplifiedio;
 
 import net.imagej.ImgPlus;
 import net.imglib2.img.Img;
@@ -6,6 +6,8 @@ import net.imglib2.img.array.ArrayImgs;
 import net.imglib2.test.ImgLib2Assert;
 import net.imglib2.test.RandomImgs;
 import net.imglib2.type.numeric.integer.UnsignedByteType;
+import sc.fiji.simplifiedio.SimplifiedIO;
+
 import org.junit.Test;
 
 import java.io.File;
@@ -105,7 +107,7 @@ class MultiImageWriter implements Runnable {
 
 	public void run() {
 		String outputFilePath = file.getPath();
-		ImageJIOUtils.saveImage( imgPlus, outputFilePath );
+		SimplifiedIO.saveImage( imgPlus, outputFilePath );
 	}
 }
 
@@ -121,7 +123,7 @@ class MultiImageReader implements Runnable {
 
 	@SuppressWarnings( { "rawtypes", "unchecked" } )
 	public void run() {
-		ImgPlus< ? > readImage = ImageJIOUtils.openImage( file.getAbsolutePath() );
+		ImgPlus< ? > readImage = SimplifiedIO.openImage( file.getAbsolutePath() );
 		ImgLib2Assert.assertImageEquals( ( Img ) readImage.getImg(), ( Img ) imgPlus.getImg() );
 	}
 }
