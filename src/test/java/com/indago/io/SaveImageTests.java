@@ -48,22 +48,21 @@ public class SaveImageTests {
 	@Test
 	public void testSaveTifImageWithJ1() throws IOException {
 
-		testSaveImage( "tif", ImageJIOUtils::saveImageWithIJ1 );
+		testSaveImage( "tif", ImageJIOUtils::saveImage);
 	}
 
 	@Test
 	public void testSaveJpgImageWithJ1() throws IOException {
 
-		testSaveImage( "jpg", ImageJIOUtils::saveImageWithIJ1 );
+		testSaveImage( "jpg", ImageJIOUtils::saveImage);
 	}
 
 	@Test
 	public void testSavePngImageWithJ1() throws IOException {
 
-		testSaveImage( "png", ImageJIOUtils::saveImageWithIJ1 );
+		testSaveImage( "png", ImageJIOUtils::saveImage);
 	}
 
-	@SuppressWarnings( { "unchecked", "rawtypes" } )
 	private void testSaveImage( String outExt, BiConsumer< ImgPlus< ? >, String > saveImageFunction ) throws IOException {
 
 		Collection< File > images = listImageFiles();
@@ -86,6 +85,7 @@ public class SaveImageTests {
 		assertImageEquals( originalImage, savedImage );
 	}
 
+	@SuppressWarnings( { "rawtypes", "unchecked" } )
 	private void assertImageEquals( ImgPlus< ? > expected, ImgPlus< ? > actual )
 	{
 		if ( isRealType( expected ) && isRealType( actual ) )
