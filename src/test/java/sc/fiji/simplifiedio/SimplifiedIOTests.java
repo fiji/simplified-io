@@ -4,9 +4,13 @@ import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.LoggerContext;
 import net.imagej.ImgPlus;
+import net.imglib2.RandomAccessibleInterval;
+import net.imglib2.test.ImgLib2Assert;
 import net.imglib2.type.numeric.ARGBType;
+import net.imglib2.type.numeric.RealType;
 import net.imglib2.type.numeric.real.DoubleType;
 import net.imglib2.util.StopWatch;
+import net.imglib2.util.Util;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import sc.fiji.simplifiedio.SimplifiedIO;
@@ -21,15 +25,17 @@ import org.junit.runners.Parameterized;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Collection;
+import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
 import static org.testng.AssertJUnit.assertNotNull;
 
 @RunWith(Parameterized.class)
-public class OpenImageTests
+public class SimplifiedIOTests
 {
 
 	private final File imageFile;
@@ -93,7 +99,7 @@ public class OpenImageTests
 		return FileUtils.listFiles( new File( imagesPath ), zips, null );
 	}
 
-	public OpenImageTests( File imageFile ) {
+	public SimplifiedIOTests( File imageFile ) {
 		this.imageFile = imageFile;
 	}
 
@@ -142,6 +148,51 @@ public class OpenImageTests
 		ImgPlus img2 = loadImageFunction.apply( imageFile.getAbsolutePath() );
 		System.out.println( "Time elapsed " + watch.toString() );
 		assertNotNull( img2 );
+	}
+
+	@Test
+	public void testSaveTifImage() throws IOException {
+		testSaveImage(imageFile, "tif", SimplifiedIO::saveImage );
+	}
+
+	@Ignore
+	@Test
+	public void testSaveJpgImage() throws IOException {
+		testSaveImage(imageFile, "jpg", SimplifiedIO::saveImage );
+	}
+
+	@Ignore
+	@Test
+	public void testSavePngImage() throws IOException {
+		testSaveImage(imageFile, "png", SimplifiedIO::saveImage );
+	}
+
+	private void testSaveImage( File image, String outExt, BiConsumer< ImgPlus< ? >, String > saveImageFunction ) throws IOException
+	{
+		File outputFile = File.createTempFile( "test", "." + outExt );
+		outputFile.deleteOnExit();
+		String outputFilePath = outputFile.getPath();
+		ImgPlus< ? > originalImage = SimplifiedIO.openImage( image.getAbsolutePath() );
+		System.out.println( "Writing:" + image.getName() );
+		StopWatch watch = StopWatch.createAndStart();
+		saveImageFunction.accept( originalImage, outputFilePath );
+		ImgPlus< ? > savedImage = SimplifiedIO.openImage( outputFile.getAbsolutePath() );
+		System.out.println( "Time elapsed " + watch.toString() );
+		assertImageEquals( originalImage, savedImage );
+	}
+
+	@SuppressWarnings( { "rawtypes", "unchecked" } )
+	private void assertImageEquals( ImgPlus< ? > expected, ImgPlus< ? > actual )
+	{
+		if ( isRealType( expected ) && isRealType( actual ) )
+			ImgLib2Assert.assertImageEqualsRealType( ( RandomAccessibleInterval ) SortAxesUtils.ensureXYCZT( expected ), ( RandomAccessibleInterval ) SortAxesUtils.ensureXYCZT( actual ), 0.0 );
+		else
+			ImgLib2Assert.assertImageEquals( SortAxesUtils.ensureXYCZT( expected ), SortAxesUtils.ensureXYCZT( actual ), Object::equals );
+	}
+
+	private boolean isRealType( ImgPlus<?> expected )
+	{
+		return Util.getTypeFromInterval(expected) instanceof RealType;
 	}
 
 }
