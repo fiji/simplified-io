@@ -15,7 +15,7 @@
 	<version>1.0.0-SNAPSHOT</version>
 
 	<name>Simplified IO</name>
-	<description>Read, write, type convert images using a single method</description>
+	<description>Read, write, type convert images using simple methods</description>
 	<url>https:github.com/fiji/simplified-io</url>
 	<inceptionYear>2019</inceptionYear>
 	<organization>

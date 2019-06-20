@@ -1,4 +1,5 @@
-[![](https://travis-ci.com/juglab/indago-io.svg?branch=master)](https://travis-ci.com/juglab/indago-io)
+[![](https://travis-ci.com/fiji/simplified-io.svg?branch=master)](https://travis-ci.com/fiji/simplified-io)
 
-indago-io
-=========
+Simplified-IO
+=============
+Read, write, type convert images using simple methods.
