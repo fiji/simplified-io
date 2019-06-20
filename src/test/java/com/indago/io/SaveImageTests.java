@@ -12,6 +12,7 @@ import net.imglib2.util.Util;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
@@ -50,11 +51,13 @@ public class SaveImageTests {
 		testSaveImage( "tif", ImageJIOUtils::saveImage );
 	}
 
+	@Ignore
 	@Test
 	public void testSaveJpgImageWithJ1() throws IOException {
 		testSaveImage( "jpg", ImageJIOUtils::saveImage );
 	}
 
+	@Ignore
 	@Test
 	public void testSavePngImageWithJ1() throws IOException {
 		testSaveImage( "png", ImageJIOUtils::saveImage );
