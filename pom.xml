@@ -10,34 +10,90 @@
 		<version>26.0.0</version>
 	</parent>
 
-	<properties>
-		<license.licenseName>bsd_2</license.licenseName>
-		<license.copyrightOwners>TrNdy developers</license.copyrightOwners>
+	<groupId>sc.fiji</groupId>
+	<artifactId>simplified-io</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
 
-		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
-		<releaseProfiles>deploy-to-imagej</releaseProfiles>
-		<imglib2.version>5.7.0</imglib2.version>
-	</properties>
-
-	<groupId>com.indago.io</groupId>
-	<artifactId>Indago</artifactId>
-	<version>0.1-SNAPSHOT</version>
-
-	<name>indago</name>
-	<description>indigare (ital.) - investigate.</description>
-	<url>https:github.com/TrNdy/indago</url>
-	<inceptionYear>2013</inceptionYear>
+	<name>Simplified IO</name>
+	<description>Read, write, type convert images using a single method</description>
+	<url>https:github.com/fiji/simplified-io</url>
+	<inceptionYear>2019</inceptionYear>
 	<organization>
-		<name>TrNdy</name>
-		<url>https://github.com/TrNdy</url>
+		<name>Fiji</name>
+		<url>https://fiji.sc</url>
 	</organization>
 	<licenses>
 		<license>
-			<name>Simplified BSD License</name>
-			<url>https://opensource.org/licenses/BSD-2-Clause</url>
+			<name>GNU General Public License v3+</name>
+			<url>https://www.gnu.org/licenses/gpl.html</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<developers>
+		<developer>
+			<id>turekg</id>
+			<name>Gabriella Turek</name>
+			<url>https://imagej.net/User:Turek</url>
+			<roles>
+				<role>developer</role>
+				<role>maintainer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>maarzt</id>
+			<name>Matthias Arzt</name>
+			<url>https://imagej.net/User:Maarzt</url>
+			<roles>
+				<role>developer</role>
+				<role>reviewer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<mailingLists>
+		<mailingList>
+			<name>Image.sc Forum</name>
+			<archive>https://forum.image.sc/tags/fiji</archive>
+		</mailingList>
+	</mailingLists>
+
+	<scm>
+		<connection>scm:git:git://github.com/fiji/simplified-io</connection>
+		<developerConnection>scm:git:git@github.com:fiji/simplified-io</developerConnection>
+		<tag>HEAD</tag>
+		<url>https://github.com/fiji/simplified-io</url>
+	</scm>
+	<issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/fiji/simplified-io/issues</url>
+	</issueManagement>
+	<ciManagement>
+		<system>Travis CI</system>
+		<url>https://travis-ci.com/fiji/simplified-io</url>
+	</ciManagement>
+
+	<properties>
+		<package-name>sc.fiji.simplified-io</package-name>
+		<license.licenseName>gpl_v3</license.licenseName>
+		<license.copyrightOwners>Fiji developers.</license.copyrightOwners>
+		<license.projectName>Fiji distribution of ImageJ for the life
+			sciences.</license.projectName>
+
+		<!-- NB: Deploy releases to the SciJava Maven repository. -->
+		<releaseProfiles>deploy-to-scijava</releaseProfiles>
+		
+		<imglib2.version>5.8.0</imglib2.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>scijava.public</id>
+			<url>https://maven.scijava.org/content/groups/public</url>
+		</repository>
+	</repositories>
+
+
 
 	<dependencies>
 		<dependency>
@@ -76,8 +132,10 @@
 			<groupId>ome</groupId>
 			<artifactId>formats-gpl</artifactId>
 			<exclusions>
-				<!-- TODO: This dependency is excluded because it causes class duplication problems with apache commons. -->
-				<!-- TODO: This exclusion probably breaks "TEM_filter_sample.jpg", and other bio images. -->
+				<!-- TODO: This dependency is excluded because it causes class duplication 
+					problems with apache commons. -->
+				<!-- TODO: This exclusion probably breaks "TEM_filter_sample.jpg", and 
+					other bio images. -->
 				<exclusion>
 					<groupId>ch.systems.cisd</groupId>
 					<artifactId>jhdf5</artifactId>
@@ -138,8 +196,6 @@
 			<version>3.6.1</version>
 		</dependency>
 
-
-
 		<!-- Test dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -159,72 +215,5 @@
 		</dependency>
 	</dependencies>
 
-	<developers>
-		<developer>
-			<id>tetoroa</id>
-			<name>Gabriella Turek</name>
-			<email>gaby@dv8.net</email>
-			<url>https://juglabm.mpi-cbg.de</url>
-			<organization>MPI-CBG</organization>
-			<organizationUrl>http://www.mpi-cbg.de/</organizationUrl>
-			<roles>
-				<role>developer</role>
-			</roles>
-			<timezone>+1</timezone>
-		</developer>
-	</developers>
-	<contributors>
-		<contributor>
-			<name>none</name>
-		</contributor>
-	</contributors>
-
-	<mailingLists>
-		<mailingList>
-			<name>none</name>
-		</mailingList>
-	</mailingLists>
-
-	<scm>
-		<connection>scm:git:git://github.com/juglab/indago-io</connection>
-		<developerConnection>scm:git:git@github.com:TrNdy/indago</developerConnection>
-		<tag>HEAD</tag>
-		<url>https://github.com/juglab/indago-io</url>
-	</scm>
-	<issueManagement>
-		<system>GitHub Issues</system>
-		<url>https://github.com/juglab/indago-io/issues</url>
-	</issueManagement>
-	<ciManagement>
-		<system>Travis CI</system>
-		<url>https://travis-ci.org/juglab/indago-io</url>
-	</ciManagement>
-
-
-	<repositories>
-		<repository>
-			<id>dais-maven.mpi-cbg.de</id>
-			<url>http://dais-maven.mpi-cbg.de</url>
-		</repository>
-		<repository>
-			<id>imagej.public</id>
-			<url>http://maven.imagej.net/content/groups/public</url>
-		</repository>
-	</repositories>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
 </project>
+
