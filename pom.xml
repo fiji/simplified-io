@@ -50,7 +50,9 @@
 			</roles>
 		</developer>
 	</developers>
-	<contributors></contributors>
+	<contributors>
+		<contributor></contributor>
+	</contributors>
 
 	<mailingLists>
 		<mailingList>
