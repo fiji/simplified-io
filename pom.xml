@@ -51,7 +51,9 @@
 		</developer>
 	</developers>
 	<contributors>
-		<contributor></contributor>
+		<contributor>
+			<name>none</name>
+		</contributor>
 	</contributors>
 
 	<mailingLists>
@@ -85,7 +87,7 @@
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
-		
+
 		<imglib2.version>5.8.0</imglib2.version>
 	</properties>
 
