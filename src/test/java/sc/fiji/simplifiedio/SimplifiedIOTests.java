@@ -66,7 +66,6 @@ public class SimplifiedIOTests
 		rootLogger.setLevel( Level.OFF );
 	}
 
-	@SuppressWarnings( "unchecked" )
 	private static void unzipImages()
 	{
 		Collection< File > files =
@@ -82,7 +81,6 @@ public class SimplifiedIOTests
 		}
 	}
 
-	@SuppressWarnings( "unchecked" )
 	private static Collection< File > listImageFiles()
 	{
 		final IOFileFilter zips = new IOFileFilter() {
