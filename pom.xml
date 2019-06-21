@@ -114,6 +114,7 @@
 			<artifactId>loci_plugins</artifactId>
 			<version>4.4.9</version>
 
+			<!--  These cause verification errors (duplicate classes) -->
 			<exclusions>
 				<exclusion>
 					<groupId>edu.ucar</groupId>
