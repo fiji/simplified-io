@@ -32,7 +32,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import static org.junit.Assert.assertEquals;
-import static org.testng.AssertJUnit.assertNotNull;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(Parameterized.class)
 public class SimplifiedIOTests
@@ -66,6 +66,7 @@ public class SimplifiedIOTests
 		rootLogger.setLevel( Level.OFF );
 	}
 
+	@SuppressWarnings( "unchecked" )
 	private static void unzipImages()
 	{
 		Collection< File > files =
@@ -81,6 +82,7 @@ public class SimplifiedIOTests
 		}
 	}
 
+	@SuppressWarnings( "unchecked" )
 	private static Collection< File > listImageFiles()
 	{
 		final IOFileFilter zips = new IOFileFilter() {

@@ -131,7 +131,7 @@ public class SimplifiedIO {
 			messages.add( "BioFormats Exception: " + e.getMessage() );
 		}
 
-		if ( !new File(path).exists() )
+		if ( !new File( path ).exists() )
 			throw new SimplifiedIOException( "Image file doesn't exist: " + path );
 
 		throw new SimplifiedIOException( "Couldn't open image file: \"" + path + "\"\n" + "Exceptions:\n" + messages );
@@ -150,9 +150,7 @@ public class SimplifiedIO {
 			return convertBetweenRealType( image, ( RealType ) type );
 		} else if ( imageType instanceof UnsignedByteType && type instanceof ARGBType ) {
 			return convertUnsignedByteTypeToARGBType( image );
-		} else if ( imageType instanceof ARGBType && type instanceof RealType ) {
-			return convertARGBTypeToRealType( image, ( RealType ) type );
-		}
+		} else if ( imageType instanceof ARGBType && type instanceof RealType ) { return convertARGBTypeToRealType( image, ( RealType ) type ); }
 		throw new IllegalStateException( "Cannot convert between given pixel types: " + imageType.getClass().getSimpleName() + ", " + type.getClass().getSimpleName() );
 	}
 
@@ -167,18 +165,16 @@ public class SimplifiedIO {
 		IJ.save( ImgToVirtualStack.wrap( toImgPlus( img ) ), path );
 	}
 
-	@SuppressWarnings( {"unchecked", "rawtypes"} )
-	private static ImgPlus<?> toImgPlus( RandomAccessibleInterval<?> image )
-	{
-		if( image instanceof ImgPlus )
-			return ( ImgPlus<?> ) image;
-		if( image instanceof Img )
+	@SuppressWarnings( { "unchecked", "rawtypes" } )
+	private static ImgPlus< ? > toImgPlus( RandomAccessibleInterval< ? > image ) {
+		if ( image instanceof ImgPlus )
+			return ( ImgPlus< ? > ) image;
+		if ( image instanceof Img )
 			return new ImgPlus<>( ( Img< ? > ) image );
-		return new ImgPlus<>( ImgView.wrap( ( RandomAccessibleInterval ) image, null ));
+		return new ImgPlus<>( ImgView.wrap( ( RandomAccessibleInterval ) image, null ) );
 	}
 
-	private static String addTifAsDefaultExtension( String path )
-	{
+	private static String addTifAsDefaultExtension( String path ) {
 		String ext = FileUtils.getExtension( path ).toLowerCase();
 
 		if ( ext.isEmpty() ) {
