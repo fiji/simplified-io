@@ -33,3 +33,4 @@ Additionally, a type conversion method is also available:
 
 `ImgPlus< DoubleType > readImageDouble = SimplifiedIO.convert( readImage, new DoubleType() );`
 
+A number of test images of various formats were used for testing. For convenience, these can be found in the test-images directory.
