@@ -11,3 +11,4 @@ indago.properties
 # IntelliJ
 .idea/
 *.iml
+*.swp
