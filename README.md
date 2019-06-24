@@ -36,3 +36,21 @@ Additionally, a type conversion method is also available:
 All methods throw a runtime SimplifiedIOException which covers fatal errors encountered while opening or saving an image (e.g. FileNotFoundException, IOException, unsupported format, etc).
 
 A number of test images of various formats were used for testing. For convenience, these can be found in the test-images directory.
+
+How to use in your own code?
+============================
+
+Simplified-IO is intended for use in your SciJava projects, e.g. your Fiji Plugins.
+
+If you don't know better, you should start with a <code>pom.xml</code> that uses <code>pom-scijava</code> as parent POM.
+
+Within it you can then include the following dependency in order to enable Simplified-IO:
+```
+<dependency>
+    <groupId>sc.fiji</groupId>
+    <artifactId>simplified-io</artifactId>
+    <version>1.0.1</version>
+</dependency>
+```
+
+This all means little to you? You might want to check out https://imagej.net/Learnathon 
