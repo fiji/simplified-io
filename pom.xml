@@ -109,12 +109,25 @@
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2-ij</artifactId>
 		</dependency>
+    <dependency>
+      <groupId>javax.media</groupId>
+      <artifactId>jai-core</artifactId>
+		</dependency>
+    <dependency>
+      <groupId>com.sun.media</groupId>
+      <artifactId>jai-codec</artifactId>
+    </dependency>
+		<dependency>
+			<groupId>loci</groupId>
+			<artifactId>loci-common</artifactId>
+      <version>4.4.9</version>
+		</dependency>
 		<dependency>
 			<groupId>loci</groupId>
 			<artifactId>loci_plugins</artifactId>
 			<version>4.4.9</version>
 
-			<!--  These cause verification errors (duplicate classes) -->
+			<!-- These cause verification errors (duplicate classes) -->
 			<exclusions>
 				<exclusion>
 					<groupId>edu.ucar</groupId>
