@@ -53,4 +53,6 @@ Within it you can then include the following dependency in order to enable Simpl
 </dependency>
 ```
 
+_Footnote:_ please determine the latest version via https://maven.scijava.org/#nexus-search;quick~simplified-io. At some point in the future we hope that the SciJava parent POM will take care of this and you can drop the version-tag altogether.
+
 This all means little to you? You might want to check out https://imagej.net/Learnathon 
