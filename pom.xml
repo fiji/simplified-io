@@ -98,34 +98,56 @@
 		</repository>
 	</repositories>
 
-
 	<dependencies>
+		<!-- ImageJ dependencies -->
 		<dependency>
-			<groupId>io.scif</groupId>
-			<artifactId>scifio</artifactId>
+			<groupId>net.imagej</groupId>
+			<artifactId>ij</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.imagej</groupId>
+			<artifactId>imagej-common</artifactId>
+		</dependency>
+
+		<!-- ImgLib2 dependencies -->
+		<dependency>
+			<groupId>net.imglib2</groupId>
+			<artifactId>imglib2</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>net.imglib2</groupId>
 			<artifactId>imglib2-ij</artifactId>
 		</dependency>
+
+		<!-- SciJava dependencies -->
 		<dependency>
-			<groupId>javax.media</groupId>
-			<artifactId>jai-core</artifactId>
+			<groupId>org.scijava</groupId>
+			<artifactId>scijava-common</artifactId>
 		</dependency>
+
+		<!-- SCIFIO dependencies -->
 		<dependency>
-			<groupId>com.sun.media</groupId>
-			<artifactId>jai-codec</artifactId>
+			<groupId>io.scif</groupId>
+			<artifactId>scifio</artifactId>
 		</dependency>
+
+		<!-- OME dependencies -->
 		<dependency>
-			<groupId>org.openmicroscopy</groupId>
-			<artifactId>ome-common</artifactId>
+			<groupId>ome</groupId>
+			<artifactId>formats-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>ome</groupId>
 			<artifactId>bio-formats_plugins</artifactId>
 		</dependency>
 
-		<!-- Test dependencies -->
+		<!-- Third party dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<!-- Test scope dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
