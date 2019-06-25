@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.scijava</groupId>
 		<artifactId>pom-scijava</artifactId>
-		<version>26.0.0</version>
+		<version>27.0.1</version>
 	</parent>
 
 	<groupId>sc.fiji</groupId>
@@ -99,7 +99,6 @@
 	</repositories>
 
 
-
 	<dependencies>
 		<dependency>
 			<groupId>io.scif</groupId>
@@ -118,27 +117,12 @@
 			<artifactId>jai-codec</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>loci</groupId>
-			<artifactId>loci-common</artifactId>
-			<version>4.4.9</version>
+			<groupId>org.openmicroscopy</groupId>
+			<artifactId>ome-common</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>loci</groupId>
-			<artifactId>loci_plugins</artifactId>
-			<version>4.4.9</version>
-
-
-			<!-- These cause verification errors (duplicate classes) -->
-			<exclusions>
-				<exclusion>
-					<groupId>edu.ucar</groupId>
-					<artifactId>udunits</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>edu.ucar</groupId>
-					<artifactId>netcdf</artifactId>
-				</exclusion>
-			</exclusions>
+			<groupId>ome</groupId>
+			<artifactId>bio-formats_plugins</artifactId>
 		</dependency>
 
 		<!-- Test dependencies -->
