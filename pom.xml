@@ -79,7 +79,7 @@
 	</ciManagement>
 
 	<properties>
-		<package-name>sc.fiji.simplified-io</package-name>
+		<package-name>sc.fiji.simplifiedio</package-name>
 		<license.licenseName>gpl_v3</license.licenseName>
 		<license.copyrightOwners>Fiji developers.</license.copyrightOwners>
 		<license.projectName>Fiji distribution of ImageJ for the life
