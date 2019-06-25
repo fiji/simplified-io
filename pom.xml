@@ -82,8 +82,7 @@
 		<package-name>sc.fiji.simplifiedio</package-name>
 		<license.licenseName>gpl_v3</license.licenseName>
 		<license.copyrightOwners>Fiji developers.</license.copyrightOwners>
-		<license.projectName>Fiji distribution of ImageJ for the life
-			sciences.</license.projectName>
+		<license.projectName>Fiji distribution of ImageJ for the life sciences.</license.projectName>
 
 		<!-- NB: Deploy releases to the SciJava Maven repository. -->
 		<releaseProfiles>deploy-to-scijava</releaseProfiles>
