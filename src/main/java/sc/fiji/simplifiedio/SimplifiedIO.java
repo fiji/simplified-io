@@ -27,6 +27,7 @@ import net.imglib2.converter.RealTypeConverters;
 import net.imglib2.img.ImagePlusAdapter;
 import net.imglib2.img.Img;
 import net.imglib2.img.ImgView;
+import net.imglib2.img.array.ArrayImgFactory;
 import net.imglib2.img.display.imagej.ImgPlusViews;
 import net.imglib2.img.display.imagej.ImgToVirtualStack;
 import net.imglib2.type.NativeType;
@@ -194,7 +195,7 @@ public class SimplifiedIO {
 					o.set( ARGBType.rgba( value, value, value, 255 ) );
 				},
 				new ARGBType() );
-		Img< ARGBType > convertedImg = ImgView.wrap( convertedRAI, null );
+		Img< ARGBType > convertedImg = ImgView.wrap( convertedRAI, new ArrayImgFactory< ARGBType >( new ARGBType() ) );
 		return new ImgPlus<>( convertedImg, image );
 	}
 
@@ -202,15 +203,16 @@ public class SimplifiedIO {
 	private static < T extends NativeType< T > > ImgPlus< T >
 			convertBetweenRealType( ImgPlus image, RealType type ) {
 		RandomAccessibleInterval< T > convertedRAI = RealTypeConverters.convert( image, type );
-		Img< T > convertedImg = ImgView.wrap( convertedRAI, null );
+		Img< T > convertedImg = ImgView.wrap( convertedRAI, new ArrayImgFactory<T>( convertedRAI.randomAccess().get().createVariable() ) );
 		return new ImgPlus<>( convertedImg, image );
 	}
 
-	private static < T extends RealType< T > > ImgPlus< T >
-			convertARGBTypeToRealType( ImgPlus< ARGBType > image, T type ) {
+	@SuppressWarnings("rawtypes")
+	private static < T extends RealType< T > & NativeType< T > > ImgPlus< T >
+			convertARGBTypeToRealType( ImgPlus< ARGBType > image, RealType type ) {
 		RandomAccessibleInterval< T > convertedRAI =
 				RealTypeConverters.convert( Converters.argbChannels( image ), type );
-		Img< T > convertedImg = ImgView.wrap( convertedRAI, null );
+		Img< T > convertedImg = ImgView.wrap( convertedRAI, new ArrayImgFactory< T >( convertedRAI.randomAccess().get().createVariable() ) );
 		int n = image.numDimensions();
 		CalibratedAxis[] axis = new CalibratedAxis[ n + 1 ];
 		for ( int i = 0; i < n; i++ ) {
