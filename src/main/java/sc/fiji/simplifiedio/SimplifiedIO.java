@@ -19,7 +19,6 @@ import loci.plugins.in.ImporterOptions;
 import net.imagej.Dataset;
 import net.imagej.ImgPlus;
 import net.imagej.axis.Axes;
-import net.imagej.axis.CalibratedAxis;
 import net.imagej.axis.DefaultLinearAxis;
 import net.imglib2.RandomAccessibleInterval;
 import net.imglib2.converter.Converters;
@@ -208,18 +207,19 @@ public class SimplifiedIO {
 	}
 
 	@SuppressWarnings("rawtypes")
-	private static < T extends RealType< T > & NativeType< T > > ImgPlus< T >
-			convertARGBTypeToRealType( ImgPlus< ARGBType > image, RealType type ) {
-		RandomAccessibleInterval< T > convertedRAI =
-				RealTypeConverters.convert( Converters.argbChannels( image ), type );
-		Img< T > convertedImg = ImgView.wrap( convertedRAI, new ArrayImgFactory< T >( convertedRAI.randomAccess().get().createVariable() ) );
+	private static < T extends NativeType< T > > ImgPlus< T > convertARGBTypeToRealType( ImgPlus< ARGBType > image,
+			RealType type) {
+		final ImgPlus< T > imgPlus = convertBetweenRealType(
+				new ImgPlus<>( ImgView.wrap( Converters.argbChannels( image ), null ) ), type );
+
 		int n = image.numDimensions();
-		CalibratedAxis[] axis = new CalibratedAxis[ n + 1 ];
-		for ( int i = 0; i < n; i++ ) {
-			axis[ i ] = image.axis( i );
+		for ( int i = 0; i < n; i++ )
+		{
+			imgPlus.setAxis( image.axis( i ), i );
 		}
-		axis[ n ] = new DefaultLinearAxis( Axes.CHANNEL );
-		return new ImgPlus<>( convertedImg, image.getName(), axis );
+		imgPlus.setAxis( new DefaultLinearAxis( Axes.CHANNEL ), n );
+		imgPlus.setName( image.getName() );
+		return imgPlus;
 	}
 
 	private static SCIFIO getScifio() {
