@@ -148,6 +148,7 @@ public class SimplifiedIOTests
 		ImgPlus img2 = loadImageFunction.apply( imageFile.getAbsolutePath() );
 		System.out.println( "Time elapsed " + watch.toString() );
 		assertNotNull( img2 );
+		assertNotNull( img2.factory() );
 	}
 
 	@Test
