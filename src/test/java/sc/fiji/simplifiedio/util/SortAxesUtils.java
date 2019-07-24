@@ -1,4 +1,4 @@
-package sc.fiji.simplifiedio;
+package sc.fiji.simplifiedio.util;
 
 import net.imagej.ImgPlus;
 import net.imagej.axis.Axes;
