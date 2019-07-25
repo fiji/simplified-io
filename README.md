@@ -35,7 +35,8 @@ Additionally, a type conversion method is also available:
 
 All methods throw a runtime SimplifiedIOException which covers fatal errors encountered while opening or saving an image (e.g. FileNotFoundException, IOException, unsupported format, etc).
 
-A number of test images of various formats were used for testing. For convenience, these can be found in the test-images directory.
+A number of test images of various formats were used for testing. When you run the tests for the first time, a zipped file with all the test images will be downloaded from the web and
+the images installed where expected by the tests. This may take some time.
 
 How to use in your own code?
 ============================

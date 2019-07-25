@@ -2,6 +2,7 @@
 *.log
 /*.project
 /target/
+/test-images/
 /.settings/
 .factorypath
 .classpath

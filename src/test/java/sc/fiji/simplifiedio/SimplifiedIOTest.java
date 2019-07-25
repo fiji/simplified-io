@@ -1,20 +1,20 @@
 package sc.fiji.simplifiedio;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import net.imagej.ImgPlus;
 import net.imglib2.RandomAccessibleInterval;
@@ -26,17 +26,9 @@ import net.imglib2.util.StopWatch;
 import net.imglib2.util.Util;
 import sc.fiji.simplifiedio.util.SortAxesUtils;
 
-@RunWith( Parameterized.class )
-public class SimplifiedIOTests extends SimplifiedIOTestBase {
+public class SimplifiedIOTest extends SimplifiedIOTestBase {
 
-	private final File imageFile;
-
-	@Parameterized.Parameters
-	public static Collection< File > data() {
-		return listImageFiles();
-	}
-
-	private static Collection< File > listImageFiles() {
+	private static Stream< File> listImageFiles() {
 		final IOFileFilter zips = new IOFileFilter() {
 
 			@Override
@@ -50,51 +42,53 @@ public class SimplifiedIOTests extends SimplifiedIOTestBase {
 			}
 		};
 
-		return FileUtils.listFiles( new File( TEST_IMAGES_DIR ), zips, null );
+		return FileUtils.listFiles( new File( TEST_IMAGES_DIR ), zips, null ).stream();
 	}
 
-	public SimplifiedIOTests( File imageFile ) {
-		this.imageFile = imageFile;
+	@Disabled( "This is not expected to work for all images. " )
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testLoadImageWithIJ1( File imageFile ) {
+		loadImage( imageFile, "testLoadImagesWithIJ1", SimplifiedIO::openImageWithIJ1 );
 	}
 
-	@Ignore( "This is not expected to work for all images. " )
-	@Test
-	public void testLoadImageWithIJ1() {
-		testLoadImage( "testLoadImagesWithIJ1", SimplifiedIO::openImageWithIJ1 );
+	@Disabled( "This is not expected to work for all images. " )
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testLoadImageWithSCIFIO( File imageFile ) {
+		loadImage( imageFile, "testLoadImagesWithSCIFIO", SimplifiedIO::openImageWithSCIFIO );
 	}
 
-	@Ignore( "This is not expected to work for all images. " )
-	@Test
-	public void testLoadImageWithSCIFIO() {
-		testLoadImage( "testLoadImagesWithSCIFIO", SimplifiedIO::openImageWithSCIFIO );
+	@Disabled( "This is not expected to work for all images. " )
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testLoadImageWithBioFormats( File imageFile ) {
+		loadImage( imageFile, "testLoadImagesWithBioFormats", SimplifiedIO::openImageWithBioFormats );
 	}
 
-	@Ignore( "This is not expected to work for all images. " )
-	@Test
-	public void testLoadImageWithBioFormats() {
-		testLoadImage( "testLoadImagesWithBioFormats", SimplifiedIO::openImageWithBioFormats );
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testLoadImage( File imageFile ) {
+		loadImage( imageFile, "testLoadImages", SimplifiedIO::openImage );
 	}
 
-	@Test
-	public void testLoadImage() {
-		testLoadImage( "testLoadImages", SimplifiedIO::openImage );
-	}
-
-	@Test
-	public void testLoadImageWithRealType() {
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testLoadImageWithRealType( File imageFile ) {
 		ImgPlus< DoubleType > image = SimplifiedIO.openImage( imageFile.getAbsolutePath(), new DoubleType() );
 		assertEquals( true, image.firstElement() instanceof DoubleType );
 	}
 
-	@Test
-	@Ignore
-	public void testLoadImageWithARGBType() {
+	@Disabled( "This is not expected to work for all images. " )
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testLoadImageWithARGBType( File imageFile ) {
 		ImgPlus< ARGBType > image = SimplifiedIO.openImage( imageFile.getAbsolutePath(), new ARGBType() );
 		assertEquals( true, image.firstElement() instanceof ARGBType );
 	}
 
 	@SuppressWarnings( "rawtypes" )
-	private void testLoadImage( String title, Function< String, ImgPlus > loadImageFunction ) {
+	private void loadImage( File imageFile, String title, Function< String, ImgPlus > loadImageFunction ) {
 		System.out.println( "******* " + title );
 		System.out.println( "Reading:" + imageFile.getName() );
 		StopWatch watch = StopWatch.createAndStart();
@@ -104,24 +98,27 @@ public class SimplifiedIOTests extends SimplifiedIOTestBase {
 		assertNotNull( img2.factory() );
 	}
 
-	@Test
-	public void testSaveTifImage() throws IOException {
-		testSaveImage( imageFile, "tif", SimplifiedIO::saveImage );
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testSaveTifImage( File imageFile ) throws IOException {
+		saveImage( imageFile, "tif", SimplifiedIO::saveImage );
 	}
 
-	@Ignore
-	@Test
-	public void testSaveJpgImage() throws IOException {
-		testSaveImage( imageFile, "jpg", SimplifiedIO::saveImage );
+	@Disabled( "This is not expected to work for all images. " )
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testSaveJpgImage( File imageFile ) throws IOException {
+		saveImage( imageFile, "jpg", SimplifiedIO::saveImage );
 	}
 
-	@Ignore
-	@Test
-	public void testSavePngImage() throws IOException {
-		testSaveImage( imageFile, "png", SimplifiedIO::saveImage );
+	@Disabled( "This is not expected to work for all images. " )
+	@ParameterizedTest
+	@MethodSource( "listImageFiles" )
+	public void testSavePngImage( File imageFile ) throws IOException {
+		saveImage( imageFile, "png", SimplifiedIO::saveImage );
 	}
 
-	private void testSaveImage( File image, String outExt, BiConsumer< ImgPlus< ? >, String > saveImageFunction ) throws IOException {
+	private void saveImage( File image, String outExt, BiConsumer< ImgPlus< ? >, String > saveImageFunction ) throws IOException {
 		File outputFile = File.createTempFile( "test", "." + outExt );
 		outputFile.deleteOnExit();
 		String outputFilePath = outputFile.getPath();

@@ -1,6 +1,6 @@
 package sc.fiji.simplifiedio;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -45,7 +45,6 @@ public class SimplifiedIOTestBase {
 		try {
 			System.out.println( "No \"test-images\" directory found, downloading and installing test images" );
 			downloadAndUnzipTestImages();
-			unzipSingleImages();
 		} catch ( InterruptedException | ExecutionException | IOException | ZipException e ) {
 			System.out.println( "Failed to source test images: " + e.getMessage() );
 			fail();
@@ -57,16 +56,11 @@ public class SimplifiedIOTestBase {
 
 		URL url = new URL( TEST_IMAGES_URL );
 		String tmpPath = TMP_DIR + File.separator + TEST_IMAGES_ZIP;
-		String finalPath = System.getProperty( "user.dir" ) + File.separator + TEST_IMAGES_ZIP;
 		try (ReadableByteChannel readableByteChannel = Channels.newChannel( url.openStream() )) {
 			try (FileOutputStream fileOutputStream = new FileOutputStream( tmpPath )) {
 				fileOutputStream.getChannel().transferFrom( readableByteChannel, 0, Long.MAX_VALUE );
-				Files.copy(
-						Paths.get( tmpPath ),
-						Paths.get( finalPath ),
-						StandardCopyOption.REPLACE_EXISTING );
 			}
-			ZipFile zipFile = new ZipFile( finalPath );
+			ZipFile zipFile = new ZipFile( tmpPath );
 			zipFile.extractAll( System.getProperty( "user.dir" ) );
 			unzipSingleImages();
 		}

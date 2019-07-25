@@ -11,7 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import net.imagej.ImgPlus;
 import net.imglib2.img.Img;
@@ -26,7 +26,7 @@ import net.imglib2.type.numeric.integer.UnsignedByteType;
  * ensure that threads writing and reading at the same
  * time don't interfere with each other.
  */
-public class ThreadSafetyTests {
+public class ThreadSafetyTest {
 
 	private Map< ImgPlus< ? >, File > imagesAndFiles = initImageAndFiles();
 
