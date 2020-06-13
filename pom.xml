@@ -51,7 +51,24 @@
 	</developers>
 	<contributors>
 		<contributor>
-			<name>none</name>
+			<name>Tim-Oliver Buchholz</name>
+			<url>https://imagej.net/User:Tibuch</url>
+			<properties><id>tibuch</id></properties>
+		</contributor>
+		<contributor>
+			<name>Florian Jug</name>
+			<url>https://imagej.net/User:Jug</url>
+			<properties><id>fjug</id></properties>
+		</contributor>
+		<contributor>
+			<name>Tobias Pietzsch</name>
+			<url>https://imagej.net/User:Pietzsch</url>
+			<properties><id>tpietzsch</id></properties>
+		</contributor>
+		<contributor>
+			<name>Curtis Rueden</name>
+			<url>https://imagej.net/User:Rueden</url>
+			<properties><id>ctrueden</id></properties>
 		</contributor>
 	</contributors>
 
