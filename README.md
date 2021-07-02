@@ -1,4 +1,4 @@
-[![](https://travis-ci.com/fiji/simplified-io.svg?branch=master)](https://travis-ci.com/fiji/simplified-io)
+[![](https://github.com/fiji/simplified-io/actions/workflows/build-main.yml/badge.svg)](https://github.com/fiji/simplified-io/actions/workflows/build-main.yml)
 
 Simplified-IO
 =============
