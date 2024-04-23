@@ -11,7 +11,7 @@
 
 	<groupId>sc.fiji</groupId>
 	<artifactId>simplified-io</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.3</version>
 
 	<name>Simplified IO</name>
 	<description>Read, write, type convert images using simple methods</description>
@@ -82,7 +82,7 @@
 	<scm>
 		<connection>scm:git:https://github.com/fiji/simplified-io</connection>
 		<developerConnection>scm:git:git@github.com:fiji/simplified-io</developerConnection>
-		<tag>HEAD</tag>
+		<tag>simplified-io-1.0.3</tag>
 		<url>https://github.com/fiji/simplified-io</url>
 	</scm>
 	<issueManagement>
