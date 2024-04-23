@@ -31,15 +31,6 @@
 
 	<developers>
 		<developer>
-			<id>turekg</id>
-			<name>Gabriella Turek</name>
-			<url>https://imagej.net/User:Turek</url>
-			<roles>
-				<role>developer</role>
-				<role>maintainer</role>
-			</roles>
-		</developer>
-		<developer>
 			<id>maarzt</id>
 			<name>Matthias Arzt</name>
 			<url>https://imagej.net/User:Maarzt</url>
@@ -48,27 +39,36 @@
 				<role>reviewer</role>
 			</roles>
 		</developer>
+		<developer>
+			<id>ctrueden</id>
+			<name>Curtis Rueden</name>
+			<url>https://imagej.net/people/ctrueden</url>
+			<roles>
+				<role>maintainer</role>
+			</roles>
+		</developer>
 	</developers>
 	<contributors>
 		<contributor>
+			<name>Gabriella Turek</name>
+			<url>https://imagej.net/people/turekg</url>
+			<roles><role>founder</role></roles>
+			<properties><id>turekg</id></properties>
+		</contributor>
+		<contributor>
 			<name>Tim-Oliver Buchholz</name>
-			<url>https://imagej.net/User:Tibuch</url>
+			<url>https://imagej.net/people/tibuch</url>
 			<properties><id>tibuch</id></properties>
 		</contributor>
 		<contributor>
 			<name>Florian Jug</name>
-			<url>https://imagej.net/User:Jug</url>
+			<url>https://imagej.net/people/fjug</url>
 			<properties><id>fjug</id></properties>
 		</contributor>
 		<contributor>
 			<name>Tobias Pietzsch</name>
-			<url>https://imagej.net/User:Pietzsch</url>
+			<url>https://imagej.net/people/tpietzsch</url>
 			<properties><id>tpietzsch</id></properties>
-		</contributor>
-		<contributor>
-			<name>Curtis Rueden</name>
-			<url>https://imagej.net/User:Rueden</url>
-			<properties><id>ctrueden</id></properties>
 		</contributor>
 	</contributors>
 
